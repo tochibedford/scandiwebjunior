@@ -38,7 +38,7 @@ export default class Currency extends Component{
 
     componentDidUpdate(){
         this.dropDownArrowRef.current.style.transform = `rotate(${this.state.droppedDown? 0:180}deg) scaleX(1.2) translateY(4px)`
-        this.dropDownRef.current.style.height = `${this.state.droppedDown? "100%":"0px"}`
+        this.dropDownRef.current.style.height = `${this.state.droppedDown? "169px":"0px"}`
     }
 
     handleDrop(event){
