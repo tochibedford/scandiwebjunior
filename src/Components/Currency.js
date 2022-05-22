@@ -5,6 +5,7 @@ export default class Currency extends Component{
         super(props);
 
         this.handleDrop = this.handleDrop.bind(this);
+        this.handleChangeCurrency = this.handleChangeCurrency.bind(this);
         this.currenciesObj = {'$':'USD', '€':'EUR', '¥':'JPY'}
         this.state = {
             currency: "$",
@@ -23,7 +24,7 @@ export default class Currency extends Component{
                 </option>
             )
             this.currenciesNormal.push(
-                <div key={index} className='dropDownOption'>
+                <div key={index} className='dropDownOption' onClick={this.handleChangeCurrency}>
                     {`${currencyKey} ${this.currenciesObj[currencyKey]}`}
                 </div>
             )
@@ -48,6 +49,14 @@ export default class Currency extends Component{
             };
         })
 
+    }
+
+    handleChangeCurrency(event){
+        this.setState(()=>{
+            return{
+                currency: event.target.innerHTML.slice(0, 1)
+            }
+        })
     }
 
     render(){

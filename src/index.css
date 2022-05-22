@@ -154,7 +154,6 @@ body {
   overflow: hidden;
   transition: height 0.5s ease-in-out;
   width: 114px;
-  /* padding: 1.2em; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
