@@ -10,27 +10,35 @@ export default class Currency extends Component{
             currency: "$",
             droppedDown: false
         }
-        this.droppedDownRef = createRef()
+        this.dropDownArrowRef = createRef()
+        this.dropDownRef = createRef()
 
         // list of Currency Element
         this.currencies = []
+        this.currenciesNormal = []
         Object.keys(this.currenciesObj).forEach((currencyKey, index)=>{
             this.currencies.push(
                 <option value={currencyKey} key={index}>
                     {`${currencyKey} ${this.currenciesObj[currencyKey]}`}
                 </option>
             )
+            this.currenciesNormal.push(
+                <div key={index} className='dropDownOption'>
+                    {`${currencyKey} ${this.currenciesObj[currencyKey]}`}
+                </div>
+            )
         })
 
     }
 
     componentDidMount(){
-        this.droppedDownRef.current.style.transform = `rotate(${this.state.droppedDown? 0:180}deg) scaleX(1.2) translateY(4px)`
-        
+        this.dropDownArrowRef.current.style.transform = `rotate(${this.state.droppedDown? 0:180}deg) scaleX(1.2) translateY(4px)`
+        this.dropDownRef.current.style.height = `${this.state.droppedDown? "100%":"0px"}`
     }
 
     componentDidUpdate(){
-        this.droppedDownRef.current.style.transform = `rotate(${this.state.droppedDown? 0:180}deg) scaleX(1.2) translateY(4px)`
+        this.dropDownArrowRef.current.style.transform = `rotate(${this.state.droppedDown? 0:180}deg) scaleX(1.2) translateY(4px)`
+        this.dropDownRef.current.style.height = `${this.state.droppedDown? "100%":"0px"}`
     }
 
     handleDrop(event){
@@ -48,7 +56,10 @@ export default class Currency extends Component{
                 <select value={this.state.currency} onChange={this.handleDrop} disabled className="currency currencyDropDown">
                     {this.currencies}
                 </select>
-                <div className="dropDownArrow" ref={this.droppedDownRef} onClick={this.handleDrop} style={this.dropDownStyle}> ^ </div>
+                <div className="dropDownArrow" ref={this.dropDownArrowRef} style={this.dropDownStyle}> ^ </div>
+                <div className='dropDown' ref={this.dropDownRef}>
+                    {this.currenciesNormal}
+                </div>
             </div>        
         )
     }

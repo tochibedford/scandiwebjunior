@@ -33,8 +33,8 @@ export default class Navbar extends Component{
                     <img src={storeLogo} alt="store logo"/>
                 </div>
                 <div className="cartMoney">
-                    <img className="cart" src={cart} alt="shopping cart icon"/>
                     <Currency />
+                    <img className="cart" src={cart} alt="shopping cart icon"/>
                 </div>
             </nav>
         )

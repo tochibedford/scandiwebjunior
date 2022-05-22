@@ -48,6 +48,7 @@ body {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  position: relative;
 }
 
 .navLinks{
@@ -94,8 +95,8 @@ body {
 
 .cartMoney{
   display: flex;
-  flex-direction: row-reverse;
   flex: 1;
+  justify-content: flex-end;
 }
 
 .styledSelect{
@@ -105,13 +106,21 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  
 }
 
-.currency, .cart{
+.currency{
+  cursor: pointer;
+}
+
+.cart{
   margin: 0 1em;
   cursor: pointer;
 }
 
+.cart{
+  width:min-content;
+}
 
 .currencyDropDown{
   appearance: none;
@@ -131,7 +140,35 @@ body {
   height: auto;
   font-weight: 600;
   font-size: 0.9em;
-  margin-left: -0.7em;
-  transition: transform 1s;
+  margin-left: 0.5em;
+  transition: transform 0.5s ease-in-out;
   transform-origin: 4px 10.5px;
+}
+
+.dropDown{
+  background: var(--background);
+  box-shadow: 0px 4px 35px #a8acb027;
+  position: absolute;
+  top: 70%;
+  transform: translateX(-25%);
+  overflow: hidden;
+  transition: height 0.5s ease-in-out;
+  width: max-content;
+  /* padding: 1.2em; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dropDownOption {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.5s;
+  height: 100%;
+}
+
+.dropDownOption:hover {
+  transform: none;
+  background: #cccccc;
 }
