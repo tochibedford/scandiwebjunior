@@ -21,6 +21,7 @@ body {
 
   background: var(--background);
   font-size: 1.6em;
+  overflow-x: hidden;
 }
 
 #root{
@@ -38,6 +39,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 }
 
 .navbar{
@@ -170,4 +172,43 @@ body {
 .dropDownOption:hover {
   transform: none;
   background: #cccccc;
+}
+
+/* category comp */
+
+.categoryContainer{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: max-content;
+  
+}
+
+.categoryName{
+  width: 100%;
+  font-weight: 200;
+  font-size: 1.8em;
+  text-align: left;
+  margin: 1em 0em;
+}
+
+.products{
+  height: 100%;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2em 1em;
+  
+}
+
+.product{
+  background: #fff;
+  height: 400px;
+  width: 350px;
+  cursor: pointer;
+  /* border: 1px solid black; */
+}
+
+.product:hover{
+  box-shadow: 0 4px 35px #a8acb042;
 }
