@@ -261,3 +261,7 @@ body {
 .addToCartImage{
   filter: invert() brightness(200%);
 }
+
+.product:hover .addToCartImageContainer{
+  opacity: 1;
+}
