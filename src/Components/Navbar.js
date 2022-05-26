@@ -2,38 +2,49 @@ import { Component } from 'react'
 import storeLogo from '../images/storeLogo.svg'
 import cart from '../images/cart.svg'
 import Currency from './Currency';
+import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 
-export default class Navbar extends Component{
+class Navbar extends Component{
     constructor(props){
         super(props);
         
         // list of categories Elements
-        
+        this.handleNavClick = this.handleNavClick.bind(this)
+        this.state = {
+            categoryElem: null,
+            currentCategory: this.props.match.params.category
+        }
 
         
     }
 
-    componentDidMount(){
-        this.categories = []
-        this.props.categories.forEach((category, index)=>{
-            this.categories.push(
-                <li key={index} className="category">
-                    {category}
-                    <div className={`${category === this.props.category?"highlighted": ""}`}></div>
-                </li>
-            )
+    handleNavClick(event){
+        this.props.history.push({
+            pathname: `/categories/${event.target.innerText.toLowerCase()}`
         })
+        this.setState(()=>{
+            return({
+                currentCategory: event.target.innerText.toLowerCase()
+            })
+        })
+        this.props.refreshBodyContainer[0]()
+    }
+
+    componentDidMount(){
+        
     }
 
 
     componentDidUpdate(){
         this.categories = []
+        let cat = this.props.match.params.category
         this.props.categories.forEach((category, index)=>{
             this.categories.push(
-                <li key={index} className="category">
+                <li key={index} className="category" onClick={this.handleNavClick}>
                     {category}
-                    <div className={`${category === this.props.category?"highlighted": ""}`}></div>
+                    <div className={`${category.toLowerCase() === this.state.currentCategory?"highlighted": ""}`}></div>
                 </li>
             )
         })
@@ -41,6 +52,16 @@ export default class Navbar extends Component{
     
 
     render(){
+        this.categories = []
+        let cat = this.props.match.params.category
+        this.props.categories.forEach((category, index)=>{
+            this.categories.push(
+                <li key={index} className="category" onClick={this.handleNavClick}>
+                    {category}
+                    <div className={`${category.toLowerCase() === this.state.currentCategory?"highlighted": ""}`}></div>
+                </li>
+            )
+        })
         return (
             <nav className="navbar">
                 <ul className="navLinks">
@@ -57,3 +78,5 @@ export default class Navbar extends Component{
         )
     }
 }
+
+export default withRouter(Navbar);
