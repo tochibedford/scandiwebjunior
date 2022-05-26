@@ -6,9 +6,11 @@ export default class Product extends Component{
 
     render(){
         return(
-            <div className="product" >
+            <div id={this.props.id} className="product" >
                 <div className="productImageContainer">
-                    <img className="productImage" src={productImage} alt="product" />
+                    <div className="productImageContainerInner">
+                        <img className="productImage" src={this.props.gallery[0]} alt="product" />
+                    </div>
                     <div className="addToCartImageContainer">
                         <img className="addToCartImage" src={cart} alt="add to cart" />
                     </div>

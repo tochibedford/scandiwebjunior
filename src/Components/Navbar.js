@@ -9,18 +9,35 @@ export default class Navbar extends Component{
         super(props);
         
         // list of categories Elements
+        
+
+        
+    }
+
+    componentDidMount(){
         this.categories = []
         this.props.categories.forEach((category, index)=>{
             this.categories.push(
                 <li key={index} className="category">
                     {category}
+                    <div className={`${category === this.props.category?"highlighted": ""}`}></div>
                 </li>
             )
         })
-
-        
     }
 
+
+    componentDidUpdate(){
+        this.categories = []
+        this.props.categories.forEach((category, index)=>{
+            this.categories.push(
+                <li key={index} className="category">
+                    {category}
+                    <div className={`${category === this.props.category?"highlighted": ""}`}></div>
+                </li>
+            )
+        })
+    }
     
 
     render(){
