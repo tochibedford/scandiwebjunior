@@ -1,4 +1,4 @@
-import { Component, createRef } from 'react'
+import { Component } from 'react'
 import Navbar from './Components/Navbar'
 import Category from './Components/Category'
 import {graphFetch} from './Components/helpers'

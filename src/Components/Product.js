@@ -1,20 +1,25 @@
-import { Component, createRef } from 'react'
+import { Component } from 'react'
 import cart from '../images/cart.svg'
 
 export default class Product extends Component{
     constructor(props){
         super(props);
-        
-        this.result = this.props.prices.filter(price=>{
-            return price.currency.symbol === this.props.currentCurrency;
-        })
+
         this.state = {
-            price: this.result[0].amount,
+            price: 0,
+        }
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState){
+        let result = nextProps.prices.filter(price=>{
+            return price.currency.symbol === nextProps.currentCurrency;
+        })
+        return {
+            price: result[0].amount
         }
     }
 
     render(){
-        
         return(
             <div id={this.props.id} className="product" >
                 <div className="productImageContainer">

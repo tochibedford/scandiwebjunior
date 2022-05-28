@@ -89,12 +89,15 @@ export default class Currency extends Component{
         let regex = "^[a-zA-Z][^a-zA-Z0-9]|^[^a-zA-Z0-9]"
         let curr = text.match(regex)[0]
         this.selectRef.current.style.width = `${curr.length*10}px`
-        this.setState(()=>{
-            return{
-                currency: text.match(regex)[0]
-            }
-        })
-        this.props.changeCurrentCurrency(text.match(regex)[0])
+        if(this.state.currency !== text.match(regex)[0]){ //makes sure it doesn't refresh if same currency is clicked
+            this.setState((prevState)=>{
+                    return{
+                        currency: text.match(regex)[0]
+                    }
+            })
+            this.props.changeCurrentCurrency(text.match(regex)[0])
+            this.props.refreshBodyOnChangeCurrency(event);
+        }
     }
 
     render(){

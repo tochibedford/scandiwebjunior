@@ -2,7 +2,6 @@ import { Component } from 'react'
 import storeLogo from '../images/storeLogo.svg'
 import cart from '../images/cart.svg'
 import Currency from './Currency';
-import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 
 
@@ -12,6 +11,7 @@ class Navbar extends Component{
         
         // list of categories Elements
         this.handleNavClick = this.handleNavClick.bind(this)
+        this.refreshBodyOnChangeCurrency = this.refreshBodyOnChangeCurrency.bind(this);
         this.state = {
             categoryElem: null,
             currentCategory: this.props.match.params.category
@@ -31,14 +31,14 @@ class Navbar extends Component{
         this.props.refreshBodyContainer[0](event.target.innerText.toLowerCase())
     }
 
-    componentDidMount(){
-        
+    refreshBodyOnChangeCurrency(event){
+        let newCategory = this.props.history.location.pathname.split("/categories/")
+        newCategory = newCategory[newCategory.length-1]
+        this.props.refreshBodyContainer[0](newCategory)
     }
-
 
     componentDidUpdate(){
         this.categories = []
-        let cat = this.props.match.params.category
         this.props.categories.forEach((category, index)=>{
             this.categories.push(
                 <li key={index} className="category" onClick={this.handleNavClick}>
@@ -52,7 +52,6 @@ class Navbar extends Component{
 
     render(){
         this.categories = []
-        let cat = this.props.match.params.category
         this.props.categories.forEach((category, index)=>{
             this.categories.push(
                 <li key={index} className="category" onClick={this.handleNavClick}>
@@ -70,7 +69,7 @@ class Navbar extends Component{
                     <img src={storeLogo} alt="store logo"/>
                 </div>
                 <div className="cartMoney">
-                    <Currency currentCurrency = {this.props.currentCurrency} changeCurrentCurrency={this.props.changeCurrentCurrency}/>
+                    <Currency refreshBodyOnChangeCurrency={this.refreshBodyOnChangeCurrency} currentCurrency = {this.props.currentCurrency} changeCurrentCurrency={this.props.changeCurrentCurrency}/>
                     <img className="cart" src={cart} alt="shopping cart icon"/>
                 </div>
             </nav>
