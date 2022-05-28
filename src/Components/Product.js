@@ -1,10 +1,20 @@
 import { Component, createRef } from 'react'
 import cart from '../images/cart.svg'
-import productImage from '../images/Smino.jpg'
 
 export default class Product extends Component{
+    constructor(props){
+        super(props);
+        
+        this.result = this.props.prices.filter(price=>{
+            return price.currency.symbol === this.props.currentCurrency;
+        })
+        this.state = {
+            price: this.result[0].amount,
+        }
+    }
 
     render(){
+        
         return(
             <div id={this.props.id} className="product" >
                 <div className="productImageContainer">
@@ -16,8 +26,8 @@ export default class Product extends Component{
                     </div>
                 </div>
                 <div className="productInfo">
-                    <div className="productName">Running Shorts</div>
-                    <div className="productPrice">$50.00</div>
+                    <div className="productName">{this.props.name}</div>
+                    <div className="productPrice">{this.props.currentCurrency} {this.state.price}</div>
                 </div>
             </div>
         )

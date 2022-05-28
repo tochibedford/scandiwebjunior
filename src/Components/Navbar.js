@@ -16,7 +16,6 @@ class Navbar extends Component{
             categoryElem: null,
             currentCategory: this.props.match.params.category
         }
-
         
     }
 
@@ -29,7 +28,7 @@ class Navbar extends Component{
                 currentCategory: event.target.innerText.toLowerCase()
             })
         })
-        this.props.refreshBodyContainer[0]()
+        this.props.refreshBodyContainer[0](event.target.innerText.toLowerCase())
     }
 
     componentDidMount(){
@@ -71,7 +70,7 @@ class Navbar extends Component{
                     <img src={storeLogo} alt="store logo"/>
                 </div>
                 <div className="cartMoney">
-                    <Currency />
+                    <Currency currentCurrency = {this.props.currentCurrency} changeCurrentCurrency={this.props.changeCurrentCurrency}/>
                     <img className="cart" src={cart} alt="shopping cart icon"/>
                 </div>
             </nav>

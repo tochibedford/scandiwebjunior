@@ -14,9 +14,8 @@ class Category extends Component {
 
     }
 
-    refreshBody(){
-        let cat = this.props.match.params.category
-        // console.log(cat)
+    refreshBody(cat){
+        
         let query = `
         query{
             category(input: { title: "${cat.toLowerCase()}" }) {
@@ -47,6 +46,7 @@ class Category extends Component {
                     inStock={product.inStock}
                     gallery={product.gallery}
                     prices={product.prices}
+                    currentCurrency={this.props.currentCurrency}
                     />
                 )
             })
@@ -54,15 +54,19 @@ class Category extends Component {
 
             this.setState(()=>{
                 return({
+                    currentCategory: cat,
                     productElements: this.productElements
                 })
             })
                 
 
         })
+        
     }
 
     componentDidMount(){
+        
+        this.props.refreshBodyContainer.push(this.refreshBody)
         let cat = this.props.match.params.category
         let query = `
         query{
@@ -94,6 +98,7 @@ class Category extends Component {
                     inStock={product.inStock}
                     gallery={product.gallery}
                     prices={product.prices}
+                    currentCurrency={this.props.currentCurrency}
                     />
                 )
             })
@@ -109,18 +114,17 @@ class Category extends Component {
     }
 
     componentDidUpdate(){
-        console.log(this.props.match.params.category)
     }
 
     render() {
-        this.props.refreshBodyContainer.push(this.refreshBody)
+        
         return (
             <div className="categoryContainer">
                 <div className="categoryName">
-                    {this.state.currentCategory}
+                    {this.state.currentCategory.charAt(0).toUpperCase()+this.state.currentCategory.slice(1)}
                 </div>
                 <div className="products">
-                    {this.state.productElements} 
+                    {this.state.productElements}
                 </div>
             </div>
         )

@@ -8,11 +8,20 @@ export default class App extends Component{
     constructor(props){
         super(props);
         this.refreshBodyContainer = []
+        this.changeCurrentCurrency = this.changeCurrentCurrency.bind(this)
         this.state = {
-            
+            currentCurrency: "$",
             category: null,
             categories: []
         }
+    }
+
+    changeCurrentCurrency(curr){
+        this.setState(()=>{
+            return {
+                currentCurrency: curr
+            }
+        })
     }
 
     componentDidMount(){
@@ -46,8 +55,8 @@ export default class App extends Component{
                             <Redirect to="/categories/all"></Redirect>
                         </Route>
                         <Route path="/categories/:category">
-                            <Navbar refreshBodyContainer={this.refreshBodyContainer} category={this.state.category} categories={this.state.categories}/>
-                            {this.state.category && <Category refreshBodyContainer={this.refreshBodyContainer} category={ this.state.category }/>}
+                            <Navbar currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={this.state.category} categories={this.state.categories}/>
+                            {this.state.category && <Category currentCurrency = {this.state.currentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={ this.state.category }/>}
                             {/* <Navbar category={this.state.category} categories={this.state.categories}/>
                             {this.state.category && <Category category={ this.state.category }/>} */}
                         </Route>
