@@ -1,10 +1,12 @@
 import { Component } from 'react'
 import cart from '../images/cart.svg'
+import ProductDescription from './ProductDescription';
 
 export default class Product extends Component{
     constructor(props){
         super(props);
 
+        this.handleOpenPDP = this.handleOpenPDP.bind(this);
         this.state = {
             price: 0,
         }
@@ -19,9 +21,13 @@ export default class Product extends Component{
         }
     }
 
+    handleOpenPDP(event){
+        this.props.toggleProductDescription(event.currentTarget)
+    }
+
     render(){
         return(
-            <div id={this.props.id} className="product" >
+            <div id={this.props.id} className="product" onClick={this.handleOpenPDP}>
                 <div className="productImageContainer">
                     <div className="productImageContainerInner">
                         <img className="productImage" src={this.props.gallery[0]} alt="product" />
