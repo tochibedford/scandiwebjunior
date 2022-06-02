@@ -19,22 +19,41 @@ class Navbar extends Component{
         
     }
 
-    handleNavClick(event){
-        this.props.history.push({
-            pathname: `/categories/${event.target.innerText.toLowerCase()}`
-        })
-        this.setState(()=>{
-            return({
-                currentCategory: event.target.innerText.toLowerCase()
+    componentDidMount(){
+        if(window.location.pathname.startsWith("/product")){
+            this.setState(()=>{
+                return{currentCategory: localStorage.getItem('category')?localStorage.getItem('category'):'all'}
             })
-        })
-        this.props.refreshBodyContainer[0](event.target.innerText.toLowerCase())
+        }
+    }
+
+    handleNavClick(event){
+        if(window.location.pathname.startsWith("/product")){
+            // console.log(this.props.currentCategory)
+            window.location.href = `/categories/${event.target.innerText.toLowerCase()}`
+        }else{
+            this.props.history.push({
+                pathname: `/categories/${event.target.innerText.toLowerCase()}`
+            })
+            this.setState(()=>{
+                return({
+                    currentCategory: event.target.innerText.toLowerCase()
+                })
+            })
+            this.props.refreshBodyContainer[0](event.target.innerText.toLowerCase())
+        }
+        localStorage.setItem('category', event.target.innerText.toLowerCase())
     }
 
     refreshBodyOnChangeCurrency(event){
-        let newCategory = this.props.history.location.pathname.split("/categories/")
-        newCategory = newCategory[newCategory.length-1]
-        this.props.refreshBodyContainer[0](newCategory)
+        if(window.location.pathname.startsWith("/product")){
+            
+        }else{
+            
+            let newCategory = this.props.history.location.pathname.split("/categories/")
+            newCategory = newCategory[newCategory.length-1]
+            this.props.refreshBodyContainer[0](newCategory)
+        }
     }
 
     componentDidUpdate(){

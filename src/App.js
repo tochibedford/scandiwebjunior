@@ -3,6 +3,8 @@ import Navbar from './Components/Navbar'
 import Category from './Components/Category'
 import {graphFetch} from './Components/helpers'
 import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom'
+import history from './Components/history'
+import ProductDescription from './Components/ProductDescription'
 
 export default class App extends Component{
     constructor(props){
@@ -10,7 +12,7 @@ export default class App extends Component{
         this.refreshBodyContainer = []
         this.changeCurrentCurrency = this.changeCurrentCurrency.bind(this)
         this.state = {
-            currentCurrency: "$",
+            currentCurrency: localStorage.getItem('currency')? localStorage.getItem('currency'):'$',
             category: null,
             categories: []
         }
@@ -59,6 +61,10 @@ export default class App extends Component{
                             {this.state.category && <Category currentCurrency = {this.state.currentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={ this.state.category }/>}
                             {/* <Navbar category={this.state.category} categories={this.state.categories}/>
                             {this.state.category && <Category category={ this.state.category }/>} */}
+                        </Route>
+                        <Route path="/product/:productid">
+                            <Navbar currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={localStorage.getItem('category')?localStorage.getItem('category'):"all"} categories={this.state.categories}/>
+                            <ProductDescription />
                         </Route>
                     </Switch>
                 </div>

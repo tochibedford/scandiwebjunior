@@ -2,31 +2,17 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom';
 import Product from '../Components/Product'
 import {graphFetch} from './helpers'
-import ProductDescription from './ProductDescription';
 
 class Category extends Component {
     constructor(props){
         super(props);
         this.refreshBody = this.refreshBody.bind(this)
-        this.toggleProductDescription = this.toggleProductDescription.bind(this)
         this.state={
             currentCategory: this.props.match.params.category,
             productElements: [],
-            showProductDescription: false,
             propertiesPDP: []
         }
-
-    }
-
-    toggleProductDescription(target){
-        let productElement = this.state.productElements.filter((productElement)=>{
-            return target.id === productElement.props.id
-        })
-        console.log(productElement) // you can now add these to this.state.propertiesPDP
-        this.setState(prevState=>{
-            return({showProductDescription: !prevState.showProductDescription})
-
-        })
+        
     }
 
     refreshBody(cat){
@@ -62,7 +48,6 @@ class Category extends Component {
                     gallery={product.gallery}
                     prices={product.prices}
                     currentCurrency={this.props.currentCurrency}
-                    toggleProductDescription={this.toggleProductDescription}
                     />
                 )
             })
@@ -81,7 +66,7 @@ class Category extends Component {
     }
 
     componentDidMount(){
-        
+
         this.props.refreshBodyContainer.push(this.refreshBody)
         let cat = this.props.match.params.category
         let query = `
@@ -115,7 +100,6 @@ class Category extends Component {
                     gallery={product.gallery}
                     prices={product.prices}
                     currentCurrency={this.props.currentCurrency}
-                    toggleProductDescription={this.toggleProductDescription}
                     />
                 )
             })
@@ -129,6 +113,7 @@ class Category extends Component {
 
         })
     }
+    
 
     render() {
         
@@ -140,8 +125,6 @@ class Category extends Component {
                 <div className="products">
                     {this.state.productElements}
                 </div>
-                
-                {this.state.showProductDescription && <ProductDescription />}
                 
             </div>
         )

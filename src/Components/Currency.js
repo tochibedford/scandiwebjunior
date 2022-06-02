@@ -90,6 +90,7 @@ export default class Currency extends Component{
         let curr = text.match(regex)[0]
         this.selectRef.current.style.width = `${curr.length*10}px`
         if(this.state.currency !== text.match(regex)[0]){ //makes sure it doesn't refresh if same currency is clicked
+            localStorage.setItem('currency', text.match(regex)[0])
             this.setState((prevState)=>{
                     return{
                         currency: text.match(regex)[0]
