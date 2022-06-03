@@ -89,7 +89,9 @@ class ProductDescription extends Component {
                     galleryAtTop: true
                 })
             })
-        }if(event.target.parentElement.scrollTop >= 550){
+            
+        }
+        if(event.target.parentElement.scrollTop >= event.target.parentElement.scrollHeight-500){
             this.setState(()=>{
                 return({
                     galleryAtBottom: true

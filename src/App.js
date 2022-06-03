@@ -5,6 +5,7 @@ import {graphFetch} from './Components/helpers'
 import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom'
 import history from './Components/history'
 import ProductDescription from './Components/ProductDescription'
+import Cart from './Components/Cart'
 
 export default class App extends Component{
     constructor(props){
@@ -65,6 +66,10 @@ export default class App extends Component{
                         <Route path="/product/:productid">
                             <Navbar currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={localStorage.getItem('category')?localStorage.getItem('category'):"all"} categories={this.state.categories}/>
                             {this.state.currentCurrency && <ProductDescription currentCurrency={this.state.currentCurrency} />}
+                        </Route>
+                        <Route path="/cart">
+                            <Navbar currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={localStorage.getItem('category')?localStorage.getItem('category'):"all"} categories={this.state.categories}/>
+                            {this.state.currentCurrency && <Cart /> }
                         </Route>
                     </Switch>
                 </div>

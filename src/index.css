@@ -346,7 +346,8 @@ body {
 }
 
 .hideScrollButton{
-  display: none;
+  opacity: 0;
+  cursor: auto;
 }
 
 .mainImagePDP{
@@ -495,3 +496,69 @@ a.productLink{
   box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 }
 
+.cartContainer{
+  font-size: 0.8em;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: max-content;
+  padding-bottom: 5em;
+}
+
+.cartName{
+  width: 100%;
+  font-weight: 200;
+  font-size: 2em;
+  text-align: left;
+  margin: 1em 0em 2em 0em;
+  font-weight: 700;
+}
+
+.cartItems{
+  width: 100%;
+}
+
+.cartItem{
+  border-top: 1px solid #E5E5E5;
+  height: 350px;
+}
+
+.cartOrder{
+  border-top: 1px solid #E5E5E5;
+  padding-top: 2em;
+  font-size: 1.4em;
+  
+}
+
+.cartTax, .cartQuantity, .cartTotal{
+  display: flex;
+  justify-content: center;
+  margin: 0.2em 0em;
+  width: 250px;
+}
+
+.cartTotal{
+  font-weight: 500;
+}
+
+.cartLabel{
+  flex: 0.6;
+}
+.cartTaxValue, .cartQuantityValue, .cartTotalValue{
+  flex: 1;
+  font-weight: 700;
+}
+
+.cartOrderButton{
+  background-color: var(--highlighter);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 280px;
+  height: 4.3rem;
+  font-weight: 600;
+  margin-top: 1em;
+  cursor: pointer;
+}
