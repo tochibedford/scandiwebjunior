@@ -26,7 +26,6 @@ body {
 
   background: var(--background);
   font-size: 1.6em;
-  /* overflow-x: hidden; */
 }
 
 #root{
@@ -247,7 +246,6 @@ body {
 .productImage{
   object-fit: cover;
   width: 100%;
-
 }
 
 .productInfo{
@@ -295,7 +293,6 @@ body {
 }
 
 .productDescriptionPortal>div{
-  /* border: solid 1px black; */
   top: 0;
   margin: 0px 1em;
 }
@@ -306,7 +303,6 @@ body {
   max-width: 150px;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: flex-start;
   height: 500px;
   overflow-y: hidden;
@@ -361,13 +357,10 @@ body {
   flex: 2;
   display: flex;
   flex-direction: column;
-  /* width: 300px; */
-  /* justify-content: space-around; */
 }
 
 .productDescriptionPDPInner{
   width: 250px;
-  /* border: black solid 1px; */
 }
 
 .productDescriptionPDP *{
