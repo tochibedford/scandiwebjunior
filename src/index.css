@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800;900&display=swap');
 
+
 *{
   margin: 0px;
   padding: 0px;
@@ -300,14 +301,56 @@ body {
 }
 
 .galleryPDP{
+  position: relative;
   width: max-content;
   max-width: 150px;
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
   align-items: flex-start;
-  /* height: 500px;
-  overflow-y: scroll; */
+  height: 500px;
+  overflow-y: hidden;
+}
+
+.galleryPDP::-webkit-scrollbar{
+  -webkit-appearance: none;
+  width: 0px;
+}
+
+.galleryPDP::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+.scrollUpGallery, .scrollDownGallery{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  font-weight: 200;
+  cursor: pointer;
+  transform: scaleX(2);
+  color: #aaad;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  mix-blend-mode: difference;
+}
+
+.scrollUpGallery{
+  position: sticky;
+  top: 0;
+}
+
+.scrollDownGallery{
+  position: sticky;
+  bottom: 0;
+  transform: rotate(180deg) scaleX(2);
+}
+
+.hideScrollButton{
+  display: none;
 }
 
 .mainImagePDP{
@@ -372,19 +415,26 @@ a.productLink{
 .attributeList{
   list-style: none;
   display: flex;
+  justify-content: flex-starts;
 }
 
 .attributeItem{
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 1.6rem;
-  /* padding: 1em; */
 }
 
-.attributeSwatch:active{
-  border: var(--highlighter) solid 0.1px;
+
+.attributeSwatchActive{
+  border: var(--highlighter) solid 1px;
 }
 
+.attributeTextActive{
+  color: white;
+  background: #1D1F22;
+}
 .attributeSwatch{
+  width: 1.7em;
+  height: 1.7em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -392,7 +442,6 @@ a.productLink{
 
 .attributeSwatchInner{
   margin-top: 0.3em;
-  margin-right: 0.2em;
   height: 1.5em;
   width: 1.5em;
   box-shadow: 0px 0px 1px rgb(124, 124, 124); /*some colors are white */
@@ -403,8 +452,8 @@ a.productLink{
   border: solid 1px black;
   margin-top: 0.3em;
   margin-right: 0.2em;
-  height: 2em;
-  max-width: 3em;
+  height: 2.5em;
+  max-width: 4em;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -432,4 +481,24 @@ a.productLink{
 
 .productInterDescription{
   margin-top: 2.5em;
+  height: 10em;
+  overflow-y: scroll;
+  
 }
+
+.productInterDescription li{
+  margin-left: 1em;
+}
+
+/* on MAC OS Scrollbar doesn't show unless user is currently scrolling - to fix: */
+.productInterDescription::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+
+.productInterDescription::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+

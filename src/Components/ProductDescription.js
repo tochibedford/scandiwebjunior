@@ -1,5 +1,6 @@
 import { Component, createRef } from 'react'
 import { withRouter } from 'react-router-dom';
+import Attribute from './Attribute';
 import { Interweave } from 'interweave';
 import {graphFetch} from './helpers'
 
@@ -9,8 +10,11 @@ class ProductDescription extends Component {
         super(props);
 
         this.mainImagePDPRef = createRef()
+        this.handleGalleryScroll = this.handleGalleryScroll.bind(this)
         this.handleClickGalleryImage = this.handleClickGalleryImage.bind(this)
         this.state = {
+            galleryAtTop: true,
+            galleryAtBottom: false,
             gallery: null,
             brandName: null,
             productName: null,
@@ -23,7 +27,6 @@ class ProductDescription extends Component {
     componentDidMount(){
         let productId = window.location.pathname.split('/product/')
         productId = productId[productId.length-1]
-        console.log(productId)
 
         let query = `
             query{
@@ -72,6 +75,40 @@ class ProductDescription extends Component {
         })
     }
 
+    handleGalleryScroll(event){
+        if(event.target.parentElement.scrollTop){
+            this.setState(()=>{
+                
+                return({
+                    galleryAtTop: false
+                })
+            })
+        }else{
+            this.setState(()=>{
+                return({
+                    galleryAtTop: true
+                })
+            })
+        }if(event.target.parentElement.scrollTop >= 550){
+            this.setState(()=>{
+                return({
+                    galleryAtBottom: true
+                })
+            })
+        }else{
+            this.setState(()=>{
+                return({
+                    galleryAtBottom: false
+                })
+            })
+        }
+        if(event.target.classList.contains('scrollUpGallery')){    
+            event.target.parentElement.scrollBy(0,-50)
+        }else{
+            event.target.parentElement.scrollBy(0,50)
+        }
+    }
+
     handleClickGalleryImage(event){
         this.mainImagePDPRef.current.src = event.currentTarget.childNodes[0].src
     }
@@ -88,41 +125,19 @@ class ProductDescription extends Component {
             });
         }
         if(this.state.attributes){
+            let productId = window.location.pathname.split('/product/')
+            productId = productId[productId.length-1]
             this.attributeElements = []
             this.state.attributes.forEach((attribute, index)=>{
-                if(attribute.type==="swatch"){
-                    this.attributeElements.push(
-                        <div key={index}>
-                            <p className="attributeName">
-                                {attribute.name.toUpperCase()}:
-                            </p>
-                            <ul className="attributeList">
-                                {attribute.items.map((item, ind)=>{
-                                    return(<li className="attributeSwatch" key={ind}> <div className="attributeSwatchInner attributeItem" style={{background:item.value}}></div> </li>)
-                                })}
-                            </ul>
-                        </div>  
-                    )
-                }else{
-                    this.attributeElements.push(
-                        <div key={index}>
-                            <p className="attributeName">
-                                {attribute.name.toUpperCase()}:
-                            </p>
-                            <ul className="attributeList">
-                                {attribute.items.map((item, ind)=>{
-                                    return(<li className="attributeItem attributeText" key={ind}>{item.value}</li>)
-                                })}
-                            </ul>
-                        </div>  
-                    )
-                }
+                this.attributeElements.push(<Attribute key={index} productId={productId} attribute={attribute} index={index}/>)
             })
         }
         return (
             <div className="productDescriptionPortal">
                 <div className="galleryPDP">
+                    <div className={`scrollUpGallery ${this.state.galleryAtTop?"hideScrollButton":" "}`} onClick={this.handleGalleryScroll}>^</div>
                     {this.galleryImageElements}
+                    <div className={`scrollDownGallery ${this.state.galleryAtBottom?"hideScrollButton":" "}`} onClick={this.handleGalleryScroll}>^</div>
                 </div>
                 <div className="mainImagePDP">
                     {this.state.gallery && <img className="mainImage" src={this.state.gallery[0]} ref={this.mainImagePDPRef}/>}

@@ -25,6 +25,7 @@ class Category extends Component {
                     name
                     inStock
                     gallery
+                    brand
                     prices{
                       currency{
                         label
@@ -46,6 +47,7 @@ class Category extends Component {
                     name={product.name}
                     inStock={product.inStock}
                     gallery={product.gallery}
+                    brand={product.brand}
                     prices={product.prices}
                     currentCurrency={this.props.currentCurrency}
                     />
@@ -77,6 +79,7 @@ class Category extends Component {
                     name
                     inStock
                     gallery
+                    brand
                     prices{
                       currency{
                         label
@@ -98,6 +101,7 @@ class Category extends Component {
                     name={product.name}
                     inStock={product.inStock}
                     gallery={product.gallery}
+                    brand={product.brand}
                     prices={product.prices}
                     currentCurrency={this.props.currentCurrency}
                     />

@@ -46,10 +46,7 @@ class Navbar extends Component{
     }
 
     refreshBodyOnChangeCurrency(event){
-        if(window.location.pathname.startsWith("/product")){
-            
-        }else{
-            
+        if(window.location.pathname.startsWith("/categories/")){
             let newCategory = this.props.history.location.pathname.split("/categories/")
             newCategory = newCategory[newCategory.length-1]
             this.props.refreshBodyContainer[0](newCategory)

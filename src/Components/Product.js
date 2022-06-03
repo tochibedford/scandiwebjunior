@@ -41,7 +41,7 @@ class Product extends Component{
                         </div>
                     </div>
                     <div className="productInfo">
-                        <div className="productName">{this.props.name}</div>
+                        <div className="productName">{this.props.brand} {this.props.name}</div>
                         <div className="productPrice">{this.props.currentCurrency} {this.state.price}</div>
                     </div>
                 </div>
