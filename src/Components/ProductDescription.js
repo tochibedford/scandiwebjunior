@@ -132,6 +132,11 @@ class ProductDescription extends Component {
                 this.attributeElements.push(<Attribute key={index} productId={productId} attribute={attribute} index={index}/>)
             })
         }
+        if(this.state.prices){
+            this.priceResult = this.state.prices.filter(price=>{
+                return price.currency.symbol === this.props.currentCurrency;
+            })
+        }
         return (
             <div className="productDescriptionPortal">
                 <div className="galleryPDP">
@@ -151,7 +156,7 @@ class ProductDescription extends Component {
                             {this.attributeElements}
                         </> }
                         <p className="attributeName">PRICE:</p>
-                        {this.state.prices && <p className="productPricePDP">${this.state.prices[0].amount}</p>}
+                        {this.state.prices && <p className="productPricePDP">{this.props.currentCurrency}{this.priceResult[0].amount}</p>}
                         <div className="addToCartLargeButton">ADD TO CART</div>
                         <div className="productInterDescription">
                             <Interweave content={`${this.state.description}`}/>

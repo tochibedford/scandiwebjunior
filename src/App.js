@@ -64,7 +64,7 @@ export default class App extends Component{
                         </Route>
                         <Route path="/product/:productid">
                             <Navbar currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={localStorage.getItem('category')?localStorage.getItem('category'):"all"} categories={this.state.categories}/>
-                            <ProductDescription />
+                            {this.state.currentCurrency && <ProductDescription currentCurrency={this.state.currentCurrency} />}
                         </Route>
                     </Switch>
                 </div>
