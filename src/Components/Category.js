@@ -33,6 +33,16 @@ class Category extends Component {
                       }
                       amount
                     }
+                    attributes{
+                        id
+                        name
+                        type
+                        items{
+                            id
+                            value
+                            displayValue
+                        }
+                    }
                 }
             }
         }
@@ -49,6 +59,7 @@ class Category extends Component {
                     gallery={product.gallery}
                     brand={product.brand}
                     prices={product.prices}
+                    cart = {this.props.cart}
                     currentCurrency={this.props.currentCurrency}
                     />
                 )
@@ -87,6 +98,16 @@ class Category extends Component {
                       }
                       amount
                     }
+                    attributes{
+                        id
+                        name
+                        type
+                        items{
+                            id
+                            value
+                            displayValue
+                        }
+                    }
                 }
             }
         }
@@ -103,6 +124,8 @@ class Category extends Component {
                     gallery={product.gallery}
                     brand={product.brand}
                     prices={product.prices}
+                    attributes={product.attributes}
+                    cart = {this.props.cart}
                     currentCurrency={this.props.currentCurrency}
                     />
                 )

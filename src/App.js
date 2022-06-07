@@ -15,7 +15,8 @@ export default class App extends Component{
         this.state = {
             currentCurrency: localStorage.getItem('currency')? localStorage.getItem('currency'):'$',
             category: null,
-            categories: []
+            categories: [],
+            cart: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : {}
         }
     }
 
@@ -58,18 +59,18 @@ export default class App extends Component{
                             <Redirect to="/categories/all"></Redirect>
                         </Route>
                         <Route path="/categories/:category">
-                            <Navbar currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={this.state.category} categories={this.state.categories}/>
-                            {this.state.category && <Category currentCurrency = {this.state.currentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={ this.state.category }/>}
+                            <Navbar cart={this.state.cart} currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={this.state.category} categories={this.state.categories}/>
+                            {this.state.category && <Category cart={this.state.cart} currentCurrency = {this.state.currentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={ this.state.category }/>}
                             {/* <Navbar category={this.state.category} categories={this.state.categories}/>
                             {this.state.category && <Category category={ this.state.category }/>} */}
                         </Route>
                         <Route path="/product/:productid">
-                            <Navbar currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={localStorage.getItem('category')?localStorage.getItem('category'):"all"} categories={this.state.categories}/>
-                            {this.state.currentCurrency && <ProductDescription currentCurrency={this.state.currentCurrency} />}
+                            <Navbar cart={this.state.cart} currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={localStorage.getItem('category')?localStorage.getItem('category'):"all"} categories={this.state.categories}/>
+                            {this.state.currentCurrency && <ProductDescription cart={this.state.cart} currentCurrency={this.state.currentCurrency} />}
                         </Route>
                         <Route path="/cart">
-                            <Navbar currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={localStorage.getItem('category')?localStorage.getItem('category'):"all"} categories={this.state.categories}/>
-                            {this.state.currentCurrency && <Cart /> }
+                            <Navbar cart={this.state.cart} currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={localStorage.getItem('category')?localStorage.getItem('category'):"all"} categories={this.state.categories}/>
+                            {this.state.currentCurrency && <Cart cart={this.state.cart} /> }
                         </Route>
                     </Switch>
                 </div>

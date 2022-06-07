@@ -17,26 +17,23 @@ export default class Attribute extends Component{
                 selected: evv
             })
         })
+        Array.from(event.currentTarget.parentNode.children).forEach(option=>{
+            option.classList.remove('attributeSwatchActive')
+            option.classList.remove('attributeTextActive')
+        })
         if(event.currentTarget.classList.contains('attributeSwatch')){
-            let swatches = document.querySelectorAll('.attributeSwatch')
-            swatches.forEach(swatch=>{
-                swatch.classList.remove('attributeSwatchActive')
-            })
             event.currentTarget.classList.add('attributeSwatchActive')
         }else{
-            let textAttributes = document.querySelectorAll('.attributeText')
-            textAttributes.forEach(text=>{
-                text.classList.remove('attributeTextActive')
-            })
             event.currentTarget.classList.add('attributeTextActive')
         }
+
     }
 
     render(){
         this.attributeElements = []
         if(this.props.attribute.type==="swatch"){
             this.attributeElements.push(
-                <div key={this.props.index}>
+                <div key={this.props.index} id={this.props.index} className="attribute">
                     <p className="attributeName">
                         {this.props.attribute.name.toUpperCase()}:
                     </p>
@@ -53,7 +50,7 @@ export default class Attribute extends Component{
             )
         }else{
             this.attributeElements.push(
-                <div key={this.props.index}>
+                <div key={this.props.index} id={this.props.index} className='attribute'>
                     <p className="attributeName">
                         {this.props.attribute.name.toUpperCase()}:
                     </p>

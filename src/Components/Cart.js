@@ -4,6 +4,7 @@ import CartItem from './CartItem'
 export default class Cart extends Component{
 
     render(){
+        console.log(this.props.cart)
         return(
             <div className="cartContainer">
                 <div className="cartName">

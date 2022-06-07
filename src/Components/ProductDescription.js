@@ -10,6 +10,7 @@ class ProductDescription extends Component {
         super(props);
 
         this.mainImagePDPRef = createRef()
+        this.handleAddToCart = this.handleAddToCart.bind(this)
         this.handleGalleryScroll = this.handleGalleryScroll.bind(this)
         this.handleClickGalleryImage = this.handleClickGalleryImage.bind(this)
         this.state = {
@@ -63,6 +64,7 @@ class ProductDescription extends Component {
             data = data.product
             this.setState(()=>{
                 return{
+                    id: data.id,
                     gallery: data.gallery,
                     brandName: data.brand,
                     productName: data.name,
@@ -115,6 +117,55 @@ class ProductDescription extends Component {
         this.mainImagePDPRef.current.src = event.currentTarget.childNodes[0].src
     }
 
+    handleAddToCart(event){
+        //get a list of all attributes for the current item
+        // save to this.props.cart as 
+        /*
+        cart = {
+            productId: [
+                {
+                    {attributeNumber}: {attributeChoice as an Integer},
+                    ...,
+                    ... 
+                },
+                {
+                    ...
+                }
+            ]
+        }
+        then save cart to localStorage
+        */
+        let activeSwatchAttributes = document.querySelectorAll('.attributeSwatchActive')
+        let activeTextAttributes = document.querySelectorAll('.attributeTextActive')
+        let activeAttributes = [...activeSwatchAttributes, ...activeTextAttributes]
+        let selectedAttributesForCart = {}
+        activeAttributes.forEach((attrib, index)=>{
+            let parentId = attrib.parentElement.parentElement.id
+            let id = attrib.id
+            selectedAttributesForCart[parentId]=id
+            // console.log(selectedAttributesForCart)
+        })
+        if(this.props.cart[`${this.state.id}`]){
+            this.props.cart[`${this.state.id}`] = [
+                ...this.props.cart[`${this.state.id}`],
+                selectedAttributesForCart
+            ]
+        }else{
+            this.props.cart[`${this.state.id}`] = [
+                selectedAttributesForCart
+            ]
+        }
+        let oldCart = localStorage.getItem('cart') // string
+        oldCart = JSON.parse(oldCart) //Json
+        oldCart = {
+            ...oldCart,
+            ...this.props.cart
+        }
+        oldCart = JSON.stringify(oldCart) //string
+        localStorage.setItem('cart', oldCart)
+
+    }
+
     render(){
         if(this.state.gallery){
             this.galleryImageElements = []
@@ -142,9 +193,9 @@ class ProductDescription extends Component {
         return (
             <div className="productDescriptionPortal">
                 <div className="galleryPDP">
-                    <div className={`scrollUpGallery ${this.state.galleryAtTop?"hideScrollButton":" "}`} onClick={this.handleGalleryScroll}>^</div>
+                    {this.galleryImageElements && this.galleryImageElements.length>3 && <div className={`scrollUpGallery ${this.state.galleryAtTop?"hideScrollButton":" "}`} onClick={this.handleGalleryScroll}>^</div>}
                     {this.galleryImageElements}
-                    <div className={`scrollDownGallery ${this.state.galleryAtBottom?"hideScrollButton":" "}`} onClick={this.handleGalleryScroll}>^</div>
+                    {this.galleryImageElements && this.galleryImageElements.length>3 && <div className={`scrollDownGallery ${this.state.galleryAtBottom?"hideScrollButton":" "}`} onClick={this.handleGalleryScroll}>^</div>}
                 </div>
                 <div className="mainImagePDP">
                     {this.state.gallery && <img className="mainImage" src={this.state.gallery[0]} ref={this.mainImagePDPRef}/>}
@@ -159,7 +210,7 @@ class ProductDescription extends Component {
                         </> }
                         <p className="attributeName">PRICE:</p>
                         {this.state.prices && <p className="productPricePDP">{this.props.currentCurrency}{this.priceResult[0].amount}</p>}
-                        <div className="addToCartLargeButton">ADD TO CART</div>
+                        <div className="addToCartLargeButton" onClick={this.handleAddToCart}>ADD TO CART</div>
                         <div className="productInterDescription">
                             <Interweave content={`${this.state.description}`}/>
                         </div>

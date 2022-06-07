@@ -28,10 +28,7 @@ class Navbar extends Component{
     }
 
     handleNavClick(event){
-        if(window.location.pathname.startsWith("/product")){
-            // console.log(this.props.currentCategory)
-            window.location.href = `/categories/${event.target.innerText.toLowerCase()}`
-        }else{
+        if(window.location.pathname.startsWith("/categories")){
             this.props.history.push({
                 pathname: `/categories/${event.target.innerText.toLowerCase()}`
             })
@@ -41,6 +38,8 @@ class Navbar extends Component{
                 })
             })
             this.props.refreshBodyContainer[0](event.target.innerText.toLowerCase())
+        }else{
+            window.location.href = `/categories/${event.target.innerText.toLowerCase()}`
         }
         localStorage.setItem('category', event.target.innerText.toLowerCase())
     }
