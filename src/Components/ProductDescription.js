@@ -122,18 +122,37 @@ class ProductDescription extends Component {
         // save to this.props.cart as 
         /*
         cart = {
-            productId: [
-                {
-                    {attributeNumber}: {attributeChoice as an Integer},
-                    ...,
-                    ... 
-                },
-                {
-                    ...
-                }
-            ]
+            productId: {
+                String(
+                    Object({{attributeNumber}: {attributeChoice as an Integer}})
+                    ): {amount},
+                String(
+                    Object({{attributeNumber}: {attributeChoice as an Integer}})
+                    ): {amount},
+            }
         }
         then save cart to localStorage
+
+        this gives me the ability to not only check if a product is it the cart
+        but also to check if a certain combination of its attributes already exists in the cart
+        this is because I have converted the attribute combinations to strings like 
+        cart = {
+            "apple-imac-2021": {
+                "{"0":"0","1":"1","2":"1"}": 2,
+                "{"0":"0","1":"0","2":"1"}": 1,
+                "{"0":"1","1":"0","2":"1"}": 1,
+                "{"0":"1","1":"0","2":"0"}": 1,
+                "{"0":"1","1":"1","2":"0"}": 1,
+                "{"0":"1","1":"1","2":"1"}": 1
+            },
+            "apple-airtag": 2,
+            "apple-airpods-pro": 3,
+            "apple-iphone-12-pro": {
+                "{"0":"1","1":"2"}": 1,
+                "{"0":"1","1":"1"}": 1,
+                "{"0":"1","1":"3"}": 1
+            }
+        }
         */
         let activeSwatchAttributes = document.querySelectorAll('.attributeSwatchActive')
         let activeTextAttributes = document.querySelectorAll('.attributeTextActive')
@@ -145,15 +164,22 @@ class ProductDescription extends Component {
             selectedAttributesForCart[parentId]=id
             // console.log(selectedAttributesForCart)
         })
+        let selectedAttributesForCartString = JSON.stringify(selectedAttributesForCart)
         if(this.props.cart[`${this.state.id}`]){
-            this.props.cart[`${this.state.id}`] = [
-                ...this.props.cart[`${this.state.id}`],
-                selectedAttributesForCart
-            ]
+            // this.props.cart[`${this.state.id}`] = [
+            //     ...this.props.cart[`${this.state.id}`],
+            //     selectedAttributesForCart
+            // ]
+            if(this.props.cart[`${this.state.id}`][selectedAttributesForCartString]){
+                this.props.cart[`${this.state.id}`][selectedAttributesForCartString] += 1 
+            }else{
+                this.props.cart[`${this.state.id}`][selectedAttributesForCartString] = 1
+            }
         }else{
-            this.props.cart[`${this.state.id}`] = [
-                selectedAttributesForCart
-            ]
+            this.props.cart[`${this.state.id}`]={}
+            this.props.cart[`${this.state.id}`][selectedAttributesForCartString]= 1
+            
+            // console.log(this.props.cart[`${this.state.id}`])
         }
         let oldCart = localStorage.getItem('cart') // string
         oldCart = JSON.parse(oldCart) //Json
@@ -169,7 +195,7 @@ class ProductDescription extends Component {
     render(){
         if(this.state.gallery){
             this.galleryImageElements = []
-            this.state.gallery.forEach((galleryImageLink, index )=> {
+            this.state.gallery.forEach((galleryImageLink, index)=> {
                 this.galleryImageElements.push(
                     <div className="galleryImageContainer" key={index} onClick={this.handleClickGalleryImage}>
                         <img src={galleryImageLink} className="galleryImage"/>
@@ -182,7 +208,7 @@ class ProductDescription extends Component {
             productId = productId[productId.length-1]
             this.attributeElements = []
             this.state.attributes.forEach((attribute, index)=>{
-                this.attributeElements.push(<Attribute key={index} productId={productId} attribute={attribute} index={index}/>)
+                this.attributeElements.push(<Attribute key={index} changeable={true} productId={productId} attribute={attribute} index={index}/>)
             })
         }
         if(this.state.prices){

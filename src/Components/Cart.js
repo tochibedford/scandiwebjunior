@@ -4,16 +4,31 @@ import CartItem from './CartItem'
 export default class Cart extends Component{
 
     render(){
-        console.log(this.props.cart)
+        this.cartElements = []
+        Object.keys(this.props.cart).forEach((productId, index)=>{
+            if(typeof this.props.cart[productId] === 'number'){
+                //this is a single attribute type product eg. apple airtag
+                this.cartElements.push(
+                    <CartItem changeCart={this.props.changeCart} key={index} productId={productId} amount={this.props.cart[productId]}/>
+                )
+            }else{
+                // this is a varible attribute type product eg. ps-5
+                Object.keys(this.props.cart[productId]).forEach((attributeCombinationString, innerIndex)=>{
+                    let attributeCombination = JSON.parse(attributeCombinationString)
+                    this.cartElements.push(
+                        <CartItem changeCart={this.props.changeCart} key={`${index}-${innerIndex}`} productId={productId} amount={this.props.cart[productId][attributeCombinationString]} attributeCombination={attributeCombination}/>
+                    )
+                })
+            }
+        })
+        // console.log(this.props.cart)
         return(
             <div className="cartContainer">
                 <div className="cartName">
                     CART
                 </div>
                 <div className="cartItems">
-                    <CartItem/>
-                    <CartItem/>
-                    <CartItem/>
+                    {this.cartElements}
                 </div>
                 <div className="cartOrder">
                     <div className="cartTax">

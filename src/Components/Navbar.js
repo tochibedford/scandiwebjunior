@@ -1,8 +1,8 @@
 import { Component } from 'react'
 import storeLogo from '../images/storeLogo.svg'
-import cart from '../images/cart.svg'
 import Currency from './Currency';
 import { withRouter } from 'react-router-dom';
+import CartIcon from './CartIcon';
 
 
 class Navbar extends Component{
@@ -20,6 +20,8 @@ class Navbar extends Component{
     }
 
     componentDidMount(){
+        // if on a product description page set the currentCategory to same as the one in localStorage if it exists
+        // else set it to the 'All' Category
         if(window.location.pathname.startsWith("/product")){
             this.setState(()=>{
                 return{currentCategory: localStorage.getItem('category')?localStorage.getItem('category'):'all'}
@@ -28,6 +30,14 @@ class Navbar extends Component{
     }
 
     handleNavClick(event){
+        /* 
+        if: a nav link is clicked and on we're on the category page just push the clicked category to history
+        then change state of currentCategory to the same, the page will refresh on state change
+        else(if we're not on a category page e.g. product description page): just change href to new link
+
+        at the end set the 'category' property in localStorage to the same. 
+        ##**** will this cause the localStorage to not be set since it can happen after a page navigation?
+        */
         if(window.location.pathname.startsWith("/categories")){
             this.props.history.push({
                 pathname: `/categories/${event.target.innerText.toLowerCase()}`
@@ -85,7 +95,7 @@ class Navbar extends Component{
                 </div>
                 <div className="cartMoney">
                     <Currency refreshBodyOnChangeCurrency={this.refreshBodyOnChangeCurrency} currentCurrency = {this.props.currentCurrency} changeCurrentCurrency={this.props.changeCurrentCurrency}/>
-                    <img className="cart" src={cart} alt="shopping cart icon"/>
+                    <CartIcon />
                 </div>
             </nav>
         )

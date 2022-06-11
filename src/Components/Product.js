@@ -40,7 +40,7 @@ class Product extends Component{
             localStorage.setItem('cart',JSON.stringify(this.props.cart))
             e.stopPropagation();
         }
-        console.log(this.props.cart)
+        // console.log(this.props.cart)
     }
 
     render(){
