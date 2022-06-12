@@ -95,7 +95,7 @@ class Navbar extends Component{
                 </div>
                 <div className="cartMoney">
                     <Currency refreshBodyOnChangeCurrency={this.refreshBodyOnChangeCurrency} currentCurrency = {this.props.currentCurrency} changeCurrentCurrency={this.props.changeCurrentCurrency}/>
-                    <CartIcon />
+                    <CartIcon cart={this.props.cart} changeCart={this.props.changeCart}/>
                 </div>
             </nav>
         )

@@ -187,8 +187,12 @@ class ProductDescription extends Component {
             ...oldCart,
             ...this.props.cart
         }
+        this.props.changeCart(
+            oldCart
+        )
         oldCart = JSON.stringify(oldCart) //string
         localStorage.setItem('cart', oldCart)
+        
 
     }
 
@@ -198,7 +202,7 @@ class ProductDescription extends Component {
             this.state.gallery.forEach((galleryImageLink, index)=> {
                 this.galleryImageElements.push(
                     <div className="galleryImageContainer" key={index} onClick={this.handleClickGalleryImage}>
-                        <img src={galleryImageLink} className="galleryImage"/>
+                        <img src={galleryImageLink} className="galleryImage" alt="Product Description gallery element"/>
                     </div>
                 )
             });
@@ -224,7 +228,7 @@ class ProductDescription extends Component {
                     {this.galleryImageElements && this.galleryImageElements.length>3 && <div className={`scrollDownGallery ${this.state.galleryAtBottom?"hideScrollButton":" "}`} onClick={this.handleGalleryScroll}>^</div>}
                 </div>
                 <div className="mainImagePDP">
-                    {this.state.gallery && <img className="mainImage" src={this.state.gallery[0]} ref={this.mainImagePDPRef}/>}
+                    {this.state.gallery && <img className="mainImage" src={this.state.gallery[0]} ref={this.mainImagePDPRef} alt="product description main"/>}
                 </div>
                 <div className="productDescriptionPDP">
                     <div className="productDescriptionPDPInner">

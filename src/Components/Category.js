@@ -60,6 +60,7 @@ class Category extends Component {
                     brand={product.brand}
                     prices={product.prices}
                     cart = {this.props.cart}
+                    changeCart={this.props.changeCart}
                     currentCurrency={this.props.currentCurrency}
                     />
                 )
@@ -126,6 +127,7 @@ class Category extends Component {
                     prices={product.prices}
                     attributes={product.attributes}
                     cart = {this.props.cart}
+                    changeCart={this.props.changeCart}
                     currentCurrency={this.props.currentCurrency}
                     />
                 )

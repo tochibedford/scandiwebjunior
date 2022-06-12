@@ -26,6 +26,7 @@ body {
 
   background: var(--background);
   font-size: 1.6em;
+  /* overflow-y: hidden; */
 }
 
 #root{
@@ -128,7 +129,6 @@ body {
 
 .cart{
   margin: 0 1em;
-  cursor: pointer;
 }
 
 .cart{
@@ -489,7 +489,7 @@ a.productLink{
 }
 
 /* on MAC OS Scrollbar doesn't show unless user is currently scrolling - to fix: */
-.productInterDescription::-webkit-scrollbar {
+/* .productInterDescription::-webkit-scrollbar {
   -webkit-appearance: none;
   width: 7px;
 }
@@ -498,7 +498,7 @@ a.productLink{
   border-radius: 4px;
   background-color: rgba(0, 0, 0, .5);
   box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-}
+} */
 
 .cartContainer{
   font-size: 0.8em;
@@ -575,6 +575,7 @@ a.productLink{
   display: flex;
   flex-direction: column;
 }
+
 .cartItemQuantity{
   flex: 0.2;
 }
@@ -624,7 +625,7 @@ a.productLink{
 
 .cartIconContainer{
   position: relative;
-  
+  cursor: pointer;
 }
 
 .cartCounter{
@@ -676,4 +677,166 @@ a.productLink{
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+
+/* mini Cart */
+.miniCartBackground{
+  position:fixed;
+  width: 100vw;
+  height: 100vw;
+  top: 80px;
+  left: 0;
+  z-index: 100;
+  background: #0003;
+  cursor: auto;
+}
+
+.miniCart{
+  width: 330px;
+  height: 550px; /*remove this and make it dynamic*/
+  position: absolute;
+  right: 5%;
+  background: white;
+  /* border: 1px solid rgb(236, 236, 236); */
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  z-index: 100;
+  
+}
+
+.miniCartName{
+  font-weight: 700;
+  display: flex;
+}
+
+.miniCartNameItems{
+  font-weight: 500;
+  margin-left: 0.5em;
+}
+
+.miniCartItem {
+  /* border-top: 1px solid #E5E5E5; */
+  height: auto;
+  display: flex;
+  padding: 1em 0em;
+  min-height: 150px;
+}
+
+.miniCartItemInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.miniCartItemQuantity {
+  flex: 0.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 1.6em;
+  align-items: center;
+}
+
+.miniCartItemGalleryContainer {
+  flex: 0.8;
+  position: relative;
+}
+
+.miniCartItemBrandName {
+  font-size: 1.5em;
+  margin: 0.3em 0;
+  font-weight: 300;
+  
+}
+
+.miniCartItemProductName {
+  font-size: 1.5em;
+  font-weight: 300;
+}
+
+.miniCartItemPrice {
+  font-size: 1.3em;
+  font-weight: 500;
+  margin-top: 0.5em;
+}
+
+.miniCartItemQuantityIncrease,
+.miniCartItemQuantityDecrease {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  cursor: pointer;
+}
+
+.miniCartItems{
+  overflow-y: scroll;
+  margin-top: 0.4em;
+  border-top: 1px solid rgb(232, 232, 232);
+}
+
+.miniCartItems::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 9px;
+}
+
+.miniCartItems::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+.miniCartOrder {
+  /* border-top: 1px solid #E5E5E5; */
+  padding-top: 1em;
+}
+
+.miniCartTotal{
+  display: flex;
+  justify-content: space-between;
+}
+
+.miniCartLabel{
+  font-weight: 500;
+}
+
+.miniCartTotalValue{
+  font-weight: 700;
+}
+
+.miniCartButtons{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5em;
+}
+
+.miniCartViewButton,
+.miniCartOrderButton {
+  width: 100%;
+  height: 4.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.miniCartViewButton{
+  border: 2px solid black;
+  margin-right: 0.25em;
+}
+
+.miniCartOrderButton{
+  background-color: var(--highlighter);
+  border: 2px solid var(--highlighter);
+  color: white;
+  margin-left: 0.25em;
 }

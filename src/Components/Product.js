@@ -34,9 +34,10 @@ class Product extends Component{
         if(this.props.attributes.length>0){
             window.location.href = `/product/${this.props.id}`
         }else{
-            let cart = this.props.cart
-            let id = this.props.id
             this.props.cart[`${this.props.id}`]? this.props.cart[`${this.props.id}`]+= 1:this.props.cart[`${this.props.id}`]=1
+            this.props.changeCart(
+                this.props.cart
+            )
             localStorage.setItem('cart',JSON.stringify(this.props.cart))
             e.stopPropagation();
         }

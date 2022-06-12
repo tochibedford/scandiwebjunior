@@ -133,13 +133,54 @@ export default class CartItem extends Component{
                     )
                 })
                 // console.log(this.state.gallery)
+                if(!this.props.miniCart){
+                    return(
+                        <div className='cartItem'>
+                            <div className='cartItemInfo'>
+                                {this.state.brandName && <div className="cartItemBrandName">{this.state.brandName}</div>}  
+                                {this.state.productName && <div className="cartItemProductName">{this.state.productName}</div>}  
+                                {this.state.prices && <div className="cartItemPrice">$50.00</div>}  
+                                {this.state.attributes && <div className="cartItemAttributes">{this.attributeElements}</div>}  
+                            </div>
+                            <div className="cartItemQuantity">
+                                <div className="cartItemQuantityIncrease" onClick={this.handleCartQuantityChange}>+</div>
+                                <div className="cartItemQuantityValue" >{this.props.amount}</div>
+                                <div className="cartItemQuantityDecrease" onClick={this.handleCartQuantityChange}>-</div>
+                            </div>
+                            <div className="cartItemGalleryContainer">
+                                {this.state.gallery && <CartItemGallery gallery={this.state.gallery}/>}
+                            </div>
+                        </div>
+                    )
+                }else{
+                    return(
+                        <div className='miniCartItem'>
+                            <div className='miniCartItemInfo'>
+                                {this.state.brandName && <div className="miniCartItemBrandName">{this.state.brandName}</div>}  
+                                {this.state.productName && <div className="miniCartItemProductName">{this.state.productName}</div>}  
+                                {this.state.prices && <div className="miniCartItemPrice">$50.00</div>}  
+                                {this.state.attributes && <div className="miniCartItemAttributes">{this.attributeElements}</div>}  
+                            </div>
+                            <div className="miniCartItemQuantity">
+                                <div className="miniCartItemQuantityIncrease" onClick={this.handleCartQuantityChange}>+</div>
+                                <div className="miniCartItemQuantityValue" >{this.props.amount}</div>
+                                <div className="miniCartItemQuantityDecrease" onClick={this.handleCartQuantityChange}>-</div>
+                            </div>
+                            <div className="miniCartItemGalleryContainer">
+                                {this.state.gallery && <CartItemGallery gallery={this.state.gallery}/>}
+                            </div>
+                        </div>
+                    )
+
+                }
+            }
+            if(!this.props.miniCart){
                 return(
-                    <div className='cartItem'>
+                    <div className='cartItem' id={this.props.attributeCombination}>
                         <div className="cartItemInfo">
                             {this.state.brandName && <div className="cartItemBrandName">{this.state.brandName}</div>}  
                             {this.state.productName && <div className="cartItemProductName">{this.state.productName}</div>}  
-                            {this.state.prices && <div className="cartItemPrice">$50.00</div>}  
-                            {this.state.attributes && <div className="cartItemAttributes">{this.attributeElements}</div>}  
+                            {this.state.prices && <div className="cartItemPrice">$50.00</div>}
                         </div>
                         <div className="cartItemQuantity">
                             <div className="cartItemQuantityIncrease" onClick={this.handleCartQuantityChange}>+</div>
@@ -151,24 +192,25 @@ export default class CartItem extends Component{
                         </div>
                     </div>
                 )
+            }else{
+                return(
+                    <div className='miniCartItem' id={this.props.attributeCombination}>
+                        <div className="miniCartItemInfo">
+                            {this.state.brandName && <div className="miniCartItemBrandName">{this.state.brandName}</div>}  
+                            {this.state.productName && <div className="miniCartItemProductName">{this.state.productName}</div>}  
+                            {this.state.prices && <div className="miniCartItemPrice">$50.00</div>}
+                        </div>
+                        <div className="miniCartItemQuantity">
+                            <div className="miniCartItemQuantityIncrease" onClick={this.handleCartQuantityChange}>+</div>
+                            <div className="miniCartItemQuantityValue" >{this.props.amount}</div>
+                            <div className="miniCartItemQuantityDecrease" onClick={this.handleCartQuantityChange}>-</div>
+                        </div>
+                        <div className="miniCartItemGalleryContainer">
+                            {this.state.gallery && <CartItemGallery gallery={this.state.gallery}/>}
+                        </div>
+                    </div>
+                )
             }
-            return(
-                <div className='cartItem' id={this.props.attributeCombination}>
-                    <div className="cartItemInfo">
-                        {this.state.brandName && <div className="cartItemBrandName">{this.state.brandName}</div>}  
-                        {this.state.productName && <div className="cartItemProductName">{this.state.productName}</div>}  
-                        {this.state.prices && <div className="cartItemPrice">$50.00</div>}
-                    </div>
-                    <div className="cartItemQuantity">
-                        <div className="cartItemQuantityIncrease" onClick={this.handleCartQuantityChange}>+</div>
-                        <div className="cartItemQuantityValue" >{this.props.amount}</div>
-                        <div className="cartItemQuantityDecrease" onClick={this.handleCartQuantityChange}>-</div>
-                    </div>
-                    <div className="cartItemGalleryContainer">
-                        {this.state.gallery && <CartItemGallery gallery={this.state.gallery}/>}
-                    </div>
-                </div>
-            )
         }
     }
 }
