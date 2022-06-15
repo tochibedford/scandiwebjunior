@@ -8,10 +8,13 @@
   padding: 0px;
   transition: all 0.2s;
 }
+
 :root{
   --background: #fff;
   --highlighter: #5ECE7B;
   --highlighterLess: #5ECE7B77;
+  --highlighterStockLess: #5ece7c9d;
+  --outOfStock: #767677;
 }
 
 html{
@@ -30,7 +33,6 @@ body {
 }
 
 #root{
-  width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -241,6 +243,21 @@ body {
   overflow: hidden;
   height: 100%;
   width: 100%;
+  position: relative;
+}
+
+.outOfStock {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--outOfStock);
+  background-color: #FFF7;
+  font-size: 2em;
 }
 
 .productImage{
@@ -271,7 +288,7 @@ body {
   right: 15px;
   opacity: 0;
   transition: opacity 0.3s;
-  z-index: 100;
+  z-index: 50;
 }
 
 .addToCartImage{
@@ -475,6 +492,11 @@ a.productLink{
   font-weight: 600;
   margin-top: 1em;
   cursor: pointer;
+}
+
+.disabledAddToCart{
+  background-color: var(--highlighterStockLess);
+  cursor: auto;
 }
 
 .productInterDescription{
@@ -686,14 +708,14 @@ a.productLink{
   height: 100vw;
   top: 80px;
   left: 0;
-  z-index: 100;
+  z-index: 70;
   background: #0003;
   cursor: auto;
 }
 
 .miniCart{
   width: 330px;
-  height: 550px; /*remove this and make it dynamic*/
+  height: 400px; /*remove this and make it dynamic*/
   position: absolute;
   right: 5%;
   background: white;
@@ -702,7 +724,7 @@ a.productLink{
   flex-direction: column;
   padding: 1em;
   z-index: 100;
-  
+  font-size: 0.8em;
 }
 
 .miniCartName{
@@ -830,13 +852,13 @@ a.productLink{
 }
 
 .miniCartViewButton{
-  border: 2px solid black;
+  border: 1px solid black;
   margin-right: 0.25em;
 }
 
 .miniCartOrderButton{
   background-color: var(--highlighter);
-  border: 2px solid var(--highlighter);
+  border: 1px solid var(--highlighter);
   color: white;
   margin-left: 0.25em;
 }

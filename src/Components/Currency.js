@@ -20,6 +20,19 @@ export default class Currency extends Component{
     }
 
     componentDidMount(){
+        let comp = this
+        document.addEventListener("click", (e) => {
+            let element = document.querySelector('.styledSelect')
+            if (e.target !== element && !element.contains(e.target)) {
+                if(comp.state.droppedDown){
+                    comp.setState((prevState)=>{
+                        return{
+                            droppedDown: !prevState.droppedDown
+                        };
+                    })
+                }
+            }
+        });
         this.currenciesArray = []
         this.currencies = []
         this.currenciesNormal = []

@@ -22,7 +22,8 @@ export default class CartIcon extends Component{
                 body.style.overflow='auto'
             }
             return{
-                miniCartShow
+                ...prevState,
+                miniCartShow: miniCartShow
             }
         })
     }
@@ -30,7 +31,6 @@ export default class CartIcon extends Component{
     render(){
         this.count = 0
         let cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : {}
-        // this.count = 0
         Object.keys(cart).forEach(productId=>{
             if(typeof cart[productId] === 'number'){
                 this.count += cart[productId]
@@ -46,7 +46,7 @@ export default class CartIcon extends Component{
                 {/* counter only shows count less than 10, anything above becomes 9+ */}
                 {this.state.cart && this.count<10 ? <div className="cartCounter">{this.count}</div>:<div className="cartCounter">9+</div>}
                 <img className="cart" src={cartIcon} alt="shopping cart icon"/>
-                {this.state.miniCartShow && <MiniCart cart={this.props.cart} changeCart={this.props.changeCart}/>}
+                {this.state.miniCartShow && <MiniCart currentCurrency={this.props.currentCurrency} cart={this.props.cart} changeCart={this.props.changeCart}/>}
             </div>
         )
     }

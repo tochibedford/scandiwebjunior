@@ -41,7 +41,6 @@ class Product extends Component{
             localStorage.setItem('cart',JSON.stringify(this.props.cart))
             e.stopPropagation();
         }
-        // console.log(this.props.cart)
     }
 
     render(){
@@ -51,10 +50,11 @@ class Product extends Component{
                     <div className="productImageContainer">
                         <div className="productImageContainerInner">
                             <img className="productImage" src={this.props.gallery[0]} alt="product" />
+                            {!this.props.inStock && <div className="outOfStock">OUT OF STOCK</div>}
                         </div>
-                        <div className="addToCartImageContainer" onClick={this.handleAddToCart}>
+                        {this.props.inStock && <div className="addToCartImageContainer" onClick={this.handleAddToCart}>
                             <img className="addToCartImage" src={cart} alt="add to cart" />
-                        </div>
+                        </div>}
                     </div>
                     <div className="productInfo">
                         <div className="productName">{this.props.brand} {this.props.name}</div>

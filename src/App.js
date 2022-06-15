@@ -12,11 +12,13 @@ export default class App extends Component{
         this.refreshBodyContainer = []
         this.changeCurrentCurrency = this.changeCurrentCurrency.bind(this)
         this.changeCart = this.changeCart.bind(this)
+        this.changeTotal = this.changeTotal.bind(this)
         this.state = {
             currentCurrency: localStorage.getItem('currency')? localStorage.getItem('currency'):'$',
             category: null,
             categories: [],
-            cart: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : {}
+            cart: localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : {},
+            cartTotal: 0
         }
     }
 
@@ -36,9 +38,16 @@ export default class App extends Component{
         })
     }
 
+    changeTotal(newValue){
+        this.setState(()=>{
+            return{cartTotal: newValue}
+        })
+    }
+
     componentDidMount(){
         let query = `
             query{
+
                 categories{
                     name
                 }
@@ -56,7 +65,6 @@ export default class App extends Component{
         })
         
     }
-
 
     render(){
         return (
@@ -76,7 +84,7 @@ export default class App extends Component{
                         </Route>
                         <Route path="/cart">
                             <Navbar changeCart={this.changeCart} cart={this.state.cart} currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={localStorage.getItem('category')?localStorage.getItem('category'):"all"} categories={this.state.categories}/>
-                            {this.state.currentCurrency && <Cart changeCart={this.changeCart} cart={this.state.cart} /> }
+                            {this.state.currentCurrency && <Cart changeTotal={this.changeTotal} currentCurrency={this.state.currentCurrency} changeCart={this.changeCart} cart={this.state.cart} /> }
                         </Route>
                     </Switch>
                 </div>

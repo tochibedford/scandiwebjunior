@@ -22,6 +22,7 @@ class ProductDescription extends Component {
             attributes: null,
             prices: null,
             description: null,
+            inStock: null
         }
     }
 
@@ -71,6 +72,7 @@ class ProductDescription extends Component {
                     attributes: data.attributes,
                     prices: data.prices,
                     description: data.description,
+                    inStock: data.inStock
                     // put other data here
                 }
             })
@@ -118,6 +120,9 @@ class ProductDescription extends Component {
     }
 
     handleAddToCart(event){
+        if(!this.state.inStock){
+            return
+        }
         //get a list of all attributes for the current item
         // save to this.props.cart as 
         /*
@@ -154,44 +159,55 @@ class ProductDescription extends Component {
             }
         }
         */
-        let activeSwatchAttributes = document.querySelectorAll('.attributeSwatchActive')
-        let activeTextAttributes = document.querySelectorAll('.attributeTextActive')
-        let activeAttributes = [...activeSwatchAttributes, ...activeTextAttributes]
-        let selectedAttributesForCart = {}
-        activeAttributes.forEach((attrib, index)=>{
-            let parentId = attrib.parentElement.parentElement.id
-            let id = attrib.id
-            selectedAttributesForCart[parentId]=id
-            // console.log(selectedAttributesForCart)
-        })
-        let selectedAttributesForCartString = JSON.stringify(selectedAttributesForCart)
-        if(this.props.cart[`${this.state.id}`]){
-            // this.props.cart[`${this.state.id}`] = [
-            //     ...this.props.cart[`${this.state.id}`],
-            //     selectedAttributesForCart
-            // ]
-            if(this.props.cart[`${this.state.id}`][selectedAttributesForCartString]){
-                this.props.cart[`${this.state.id}`][selectedAttributesForCartString] += 1 
-            }else{
-                this.props.cart[`${this.state.id}`][selectedAttributesForCartString] = 1
-            }
-        }else{
-            this.props.cart[`${this.state.id}`]={}
-            this.props.cart[`${this.state.id}`][selectedAttributesForCartString]= 1
+
+        console.log(this.state.attributes.length)
+        if(this.state.attributes.length<1){
+            this.props.cart[`${this.state.id}`]? this.props.cart[`${this.state.id}`]+= 1:this.props.cart[`${this.state.id}`]=1
+            this.props.changeCart(
+                this.props.cart
+            )
+            localStorage.setItem('cart',JSON.stringify(this.props.cart))
             
-            // console.log(this.props.cart[`${this.state.id}`])
+        }else{
+            let activeSwatchAttributes = document.querySelectorAll('.attributeSwatchActive')
+            let activeTextAttributes = document.querySelectorAll('.attributeTextActive')
+            let activeAttributes = [...activeSwatchAttributes, ...activeTextAttributes]
+            let selectedAttributesForCart = {}
+            activeAttributes.forEach((attrib, index)=>{
+                let parentId = attrib.parentElement.parentElement.id
+                let id = attrib.id
+                selectedAttributesForCart[parentId]=id
+                // console.log(selectedAttributesForCart)
+            })
+            let selectedAttributesForCartString = JSON.stringify(selectedAttributesForCart)
+            if(this.props.cart[`${this.state.id}`]){
+                // this.props.cart[`${this.state.id}`] = [
+                //     ...this.props.cart[`${this.state.id}`],
+                //     selectedAttributesForCart
+                // ]
+                if(this.props.cart[`${this.state.id}`][selectedAttributesForCartString]){
+                    this.props.cart[`${this.state.id}`][selectedAttributesForCartString] += 1 
+                }else{
+                    this.props.cart[`${this.state.id}`][selectedAttributesForCartString] = 1
+                }
+            }else{
+                this.props.cart[`${this.state.id}`]={}
+                this.props.cart[`${this.state.id}`][selectedAttributesForCartString]= 1
+                
+                // console.log(this.props.cart[`${this.state.id}`])
+            }
+            let oldCart = localStorage.getItem('cart') // string
+            oldCart = JSON.parse(oldCart) //Json
+            oldCart = {
+                ...oldCart,
+                ...this.props.cart
+            }
+            this.props.changeCart(
+                oldCart
+            )
+            oldCart = JSON.stringify(oldCart) //string
+            localStorage.setItem('cart', oldCart)
         }
-        let oldCart = localStorage.getItem('cart') // string
-        oldCart = JSON.parse(oldCart) //Json
-        oldCart = {
-            ...oldCart,
-            ...this.props.cart
-        }
-        this.props.changeCart(
-            oldCart
-        )
-        oldCart = JSON.stringify(oldCart) //string
-        localStorage.setItem('cart', oldCart)
         
 
     }
@@ -240,7 +256,8 @@ class ProductDescription extends Component {
                         </> }
                         <p className="attributeName">PRICE:</p>
                         {this.state.prices && <p className="productPricePDP">{this.props.currentCurrency}{this.priceResult[0].amount}</p>}
-                        <div className="addToCartLargeButton" onClick={this.handleAddToCart}>ADD TO CART</div>
+                        {this.state.inStock? <div className="addToCartLargeButton" onClick={this.handleAddToCart}>ADD TO CART</div>:
+                        <div className="addToCartLargeButton disabledAddToCart" onClick={this.handleAddToCart}>OUT OF STOCK</div>}
                         <div className="productInterDescription">
                             <Interweave content={`${this.state.description}`}/>
                         </div>
