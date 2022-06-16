@@ -108,6 +108,9 @@ export default class CartItem extends Component{
             }else{
                 if(this.productAttributeCombinationAmount === 1){
                     delete cart[this.props.productId][JSON.stringify(this.props.attributeCombination)]
+                    if(Object.keys(cart[this.props.productId]).length === 0){
+                        delete cart[this.props.productId]
+                    }
                     localStorage.setItem('cart', JSON.stringify(cart))
                     this.props.changeCart(
                             cart
