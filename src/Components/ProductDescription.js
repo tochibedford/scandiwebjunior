@@ -10,6 +10,7 @@ class ProductDescription extends Component {
         super(props);
 
         this.mainImagePDPRef = createRef()
+        this.productDescriptionRef = createRef()
         this.handleAddToCart = this.handleAddToCart.bind(this)
         this.handleGalleryScroll = this.handleGalleryScroll.bind(this)
         this.handleClickGalleryImage = this.handleClickGalleryImage.bind(this)
@@ -169,8 +170,8 @@ class ProductDescription extends Component {
             localStorage.setItem('cart',JSON.stringify(this.props.cart))
             
         }else{
-            let activeSwatchAttributes = document.querySelectorAll('.attributeSwatchActive')
-            let activeTextAttributes = document.querySelectorAll('.attributeTextActive')
+            let activeSwatchAttributes = this.productDescriptionRef.current.querySelectorAll('.attributeSwatchActive')
+            let activeTextAttributes = this.productDescriptionRef.current.querySelectorAll('.attributeTextActive')
             let activeAttributes = [...activeSwatchAttributes, ...activeTextAttributes]
             let selectedAttributesForCart = {}
             activeAttributes.forEach((attrib, index)=>{
@@ -239,7 +240,7 @@ class ProductDescription extends Component {
                 <div className="mainImagePDP">
                     {this.state.gallery && <img className="mainImage" src={this.state.gallery[0]} ref={this.mainImagePDPRef} alt="product description main"/>}
                 </div>
-                <div className="productDescriptionPDP">
+                <div className="productDescriptionPDP" ref={this.productDescriptionRef}>
                     <div className="productDescriptionPDPInner">
                         {this.state.brandName && <h2 className="brandNamePDP">{this.state.brandName}</h2>}
                         {this.state.productName && <p className="productNamePDP">{this.state.productName}</p>}
