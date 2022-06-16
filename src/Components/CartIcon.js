@@ -46,7 +46,7 @@ export default class CartIcon extends Component{
                 {/* counter only shows count less than 10, anything above becomes 9+ */}
                 {this.state.cart && this.count<10 ? <div className="cartCounter">{this.count}</div>:<div className="cartCounter">9+</div>}
                 <img className="cart" src={cartIcon} alt="shopping cart icon"/>
-                {this.state.miniCartShow && <MiniCart currentCurrency={this.props.currentCurrency} cart={this.props.cart} changeCart={this.props.changeCart}/>}
+                <MiniCart showMiniCart={this.state.miniCartShow} amount={this.count} currentCurrency={this.props.currentCurrency} cart={this.props.cart} changeCart={this.props.changeCart}/>
             </div>
         )
     }

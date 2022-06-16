@@ -29,7 +29,6 @@ body {
 
   background: var(--background);
   font-size: 1.6em;
-  /* overflow-y: hidden; */
 }
 
 #root{
@@ -323,6 +322,7 @@ body {
   align-items: flex-start;
   height: 500px;
   overflow-y: hidden;
+  scroll-behavior: smooth;
 }
 
 .galleryPDP::-webkit-scrollbar{
@@ -381,10 +381,6 @@ body {
   width: 250px;
 }
 
-/* .productDescriptionPDP *{
-  margin-bottom: 0.3em;
-} */
-
 /* stop blue links */
 a.productLink{
   color: black;
@@ -394,6 +390,7 @@ a.productLink{
 .galleryImageContainer{
   width: 80px;
   margin: 0.5em 0;
+  border: 1px solid rgb(245, 244, 244); /*to accent the gallery images just a little bit :) */
   cursor: pointer;
 }
 
@@ -426,7 +423,6 @@ a.productLink{
 .attributeList{
   list-style: none;
   display: flex;
-  /* justify-content: flex-start; */
 }
 
 .attributeItem{
@@ -459,7 +455,7 @@ a.productLink{
 .attributeSwatchInner{
   height: 1.25em;
   width: 1.25em;
-  box-shadow: 0px 0px 1px rgb(17, 17, 17); /*some colors are white */
+  box-shadow: 0px 0px 1px rgb(17, 17, 17); /*add timy border to watches because some colors are white */
   cursor: pointer;
 }
 
@@ -673,8 +669,6 @@ a.productLink{
   height: 100%;
   width: 100%;
   object-fit: contain;
-  /* border: 1px solid black; */
-  /* box-shadow: 0px 0px 1px rgb(213, 213, 213); */
 }
 
 .cartItemGalleryControls{
@@ -695,6 +689,7 @@ a.productLink{
   justify-content: center;
   align-items: center;
   margin: 0 0.3em;
+  cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -702,7 +697,19 @@ a.productLink{
 }
 
 /* mini Cart */
+
+.hideVisibility{
+  visibility: hidden;
+  transition: visibility 0s;
+}
+
+.hideMiniCart{
+  opacity: 0;
+  transition: visibility 0s;
+}
+
 .miniCartBackground{
+  transition: visibility 0s;
   position:fixed;
   width: 100vw;
   height: 100vw;
@@ -719,7 +726,6 @@ a.productLink{
   position: absolute;
   right: 5%;
   background: white;
-  /* border: 1px solid rgb(236, 236, 236); */
   display: flex;
   flex-direction: column;
   padding: 1em;
@@ -738,7 +744,6 @@ a.productLink{
 }
 
 .miniCartItem {
-  /* border-top: 1px solid #E5E5E5; */
   height: auto;
   display: flex;
   padding: 1em 0em;
@@ -816,7 +821,6 @@ a.productLink{
 }
 
 .miniCartOrder {
-  /* border-top: 1px solid #E5E5E5; */
   padding-top: 1em;
 }
 

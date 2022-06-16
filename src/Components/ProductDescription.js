@@ -123,9 +123,10 @@ class ProductDescription extends Component {
         if(!this.state.inStock){
             return
         }
-        //get a list of all attributes for the current item
-        // save to this.props.cart as 
+        
         /*
+        get a list of all attributes for the current item
+        save to this.props.cart as:
         cart = {
             productId: {
                 String(
@@ -159,8 +160,7 @@ class ProductDescription extends Component {
             }
         }
         */
-
-        console.log(this.state.attributes.length)
+       
         if(this.state.attributes.length<1){
             this.props.cart[`${this.state.id}`]? this.props.cart[`${this.state.id}`]+= 1:this.props.cart[`${this.state.id}`]=1
             this.props.changeCart(
@@ -177,14 +177,9 @@ class ProductDescription extends Component {
                 let parentId = attrib.parentElement.parentElement.id
                 let id = attrib.id
                 selectedAttributesForCart[parentId]=id
-                // console.log(selectedAttributesForCart)
             })
             let selectedAttributesForCartString = JSON.stringify(selectedAttributesForCart)
             if(this.props.cart[`${this.state.id}`]){
-                // this.props.cart[`${this.state.id}`] = [
-                //     ...this.props.cart[`${this.state.id}`],
-                //     selectedAttributesForCart
-                // ]
                 if(this.props.cart[`${this.state.id}`][selectedAttributesForCartString]){
                     this.props.cart[`${this.state.id}`][selectedAttributesForCartString] += 1 
                 }else{
@@ -193,8 +188,6 @@ class ProductDescription extends Component {
             }else{
                 this.props.cart[`${this.state.id}`]={}
                 this.props.cart[`${this.state.id}`][selectedAttributesForCartString]= 1
-                
-                // console.log(this.props.cart[`${this.state.id}`])
             }
             let oldCart = localStorage.getItem('cart') // string
             oldCart = JSON.parse(oldCart) //Json

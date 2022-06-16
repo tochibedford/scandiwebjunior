@@ -68,10 +68,6 @@ export default class CartItem extends Component{
                 }
             })
         })
-        if(this.state.prices){
-            console.log(this.state)
-            
-        }
     }
 
     handleCartQuantityChange(event){
@@ -129,15 +125,12 @@ export default class CartItem extends Component{
     }
 
     render(){
-        // console.log(typeof this.props.attributeCombination, 'number')
         this.attributeElements = []
         if(this.state.prices){
             this.priceResult = this.state.prices.filter(price=>{
                 return price.currency.symbol === this.props.currentCurrency;
             })
-            // this.props.changeTotal(this.priceResult * this.props.amount)
         }
-        // this.props.changeTotal(50)
         if(this.state.id){
             if(this.props.attributeCombination){
                 Object.keys(this.props.attributeCombination).forEach((attributeId, index)=>{
@@ -146,7 +139,6 @@ export default class CartItem extends Component{
                         <Attribute key={index} changeable={false} selectedAttribute={this.props.attributeCombination[attributeId]} productId={this.state.id} attribute={this.state.attributes[index]} index={index}/>
                     )
                 })
-                // console.log(this.state.gallery)
                 if(!this.props.miniCart){
                     return(
                         <div className='cartItem' price={this.priceResult[0].amount} amount={this.props.amount}>

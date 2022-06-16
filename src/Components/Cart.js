@@ -38,7 +38,7 @@ export default class Cart extends Component{
         cartItems.forEach(cartItem=>{
             this.total += parseFloat(cartItem.getAttributeNode("price").value) * parseInt(cartItem.getAttributeNode("amount").value)
             this.amount += parseInt(cartItem.getAttributeNode("amount").value)
-        })  
+        })
         this.cartElements = []
         Object.keys(this.props.cart).forEach((productId, index)=>{
             if(typeof this.props.cart[productId] === 'number'){
