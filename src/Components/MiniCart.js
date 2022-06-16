@@ -4,7 +4,9 @@ import CartItem from "./CartItem";
 export default class MiniCart extends Component{
     constructor(props){
         super(props);
+        
         this.handleClickMiniCart = this.handleClickMiniCart.bind(this)
+        this.miniCartBackgroundRef = createRef()
         this.miniCartItemsRef = createRef()
         this.miniCartTotalRef = createRef()
         this.total = 0
@@ -18,14 +20,6 @@ export default class MiniCart extends Component{
         window.location.href = '/cart'
     }
 
-    componentDidMount(){
-        // this.total = 0
-        // Array.from(this.miniCartItemsRef.current.children).forEach(miniCartItem=>{
-        //     this.total += parseFloat(miniCartItem.getAttributeNode("price").value) * parseInt(miniCartItem.getAttributeNode("amount").value)
-        // })
-        // this.miniCartTotalRef.current.innerText = this.props.currentCurrency + `${this.total.toFixed(2)}`
-    }
-
     componentDidUpdate(){
         //calculate total and amount and manually replace it in the DOM
         this.total = 0
@@ -33,12 +27,18 @@ export default class MiniCart extends Component{
             this.total += parseFloat(miniCartItem.getAttributeNode("price").value) * parseInt(miniCartItem.getAttributeNode("amount").value)
         })
         this.miniCartTotalRef.current.innerText = this.props.currentCurrency + `${this.total.toFixed(2)}`
-        
+        if(this.props.showMiniCart===false){
+            setTimeout(()=>{
+                this.miniCartBackgroundRef.current.classList.add("hideVisibility")
+            },200)
+        }else{
+            this.miniCartBackgroundRef.current.classList.remove("hideVisibility")
+        }
     }
 
     render(){
         this.total = 0
-        let miniCartItems = document.querySelectorAll('.cartItem')
+        let miniCartItems = document.querySelectorAll('.miniCartItem')
         miniCartItems.forEach(miniCartItem=>{
             this.total += parseFloat(miniCartItem.getAttributeNode("price").value) * parseInt(miniCartItem.getAttributeNode("amount").value)
         })
@@ -60,16 +60,16 @@ export default class MiniCart extends Component{
             }
         })
         return(
-            <div className="miniCartBackground">
+            <div className={`miniCartBackground ${!this.props.showMiniCart? "hideMiniCart":""}`} ref={this.miniCartBackgroundRef}>
                 <div className="miniCart" onClick={this.handleClickMiniCart}>
-                    <div className="miniCartName">My Bag, <div className="miniCartNameItems">3 Items</div></div>
+                    <div className="miniCartName">My Bag, <div className="miniCartNameItems">{this.props.amount} Items</div></div>
                     <div className="miniCartItems" ref={this.miniCartItemsRef}>
                         {this.cartElements}
                     </div>
                     <div className="miniCartOrder">
                         <div className="miniCartTotal">
                             <div className="miniCartLabel">Total:</div>
-                           <div className="miniCartTotalValue" ref={this.miniCartTotalRef}> {`${this.props.currentCurrency + this.total.toFixed(2)}`}</div>
+                           <div className="miniCartTotalValue" ref={this.miniCartTotalRef}> {this.props.currentCurrency + this.total.toFixed(2)}</div>
                         </div>
                         <div className="miniCartButtons">
                             <div className="miniCartViewButton" onClick={this.handleViewBag}>VIEW BAG</div>
