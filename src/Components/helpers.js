@@ -1,9 +1,9 @@
 export const graphFetch = async(query) => {
     const fetchOptions = {
         method: 'POST',
-        mode: 'cors,
+        mode: 'cors',
         headers: {
-            "Content-Type": "application/json", 
+            "Content-Type": "application/json",
         },
         body: JSON.stringify({
             query: query
