@@ -6,7 +6,7 @@ export const graphFetch = async(query) => {
             query: query
         })
     }
-    let data = await fetch('https://mockstore-endpoint.herokuapp.com/', fetchOptions)
+    let data = await fetch('https://tochi-cors-anywhere.herokuapp.com/https://mockstore-endpoint.herokuapp.com/', fetchOptions)
     data = await data.json();
         
     return data.data
