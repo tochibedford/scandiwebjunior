@@ -6,7 +6,7 @@ export const graphFetch = async(query) => {
             query: query
         })
     }
-    let data = await fetch('http://localhost:4000', fetchOptions)
+    let data = await fetch('https://mockstore-endpoint.herokuapp.com/', fetchOptions)
     data = await data.json();
         
     return data.data
