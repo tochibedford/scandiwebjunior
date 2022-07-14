@@ -10,9 +10,10 @@ export default class CartItemGallery extends Component{
     }
 
     handleGalleryNav(event){
+        const {gallery} = this.props;
         if(event.currentTarget.innerText === '>'){
             this.setState((prevState)=>{
-                if(prevState.currentImage === this.props.gallery.length-1){
+                if(prevState.currentImage === gallery.length-1){
                     return{
                         currentImage: 0
                     }
@@ -26,7 +27,7 @@ export default class CartItemGallery extends Component{
             this.setState((prevState)=>{
                 if(prevState.currentImage === 0){
                     return{
-                        currentImage: this.props.gallery.length-1
+                        currentImage: gallery.length-1
                     }
                 }
                 return{
@@ -37,10 +38,11 @@ export default class CartItemGallery extends Component{
     }
 
     render(){
+        const {gallery} = this.props;
         return(
             <>
-                <img src={`${this.props.gallery[this.state.currentImage]}`} className="cartItemGalleryImage" alt="cart item gallery" />
-                {this.props.gallery.length > 1 && <div className="cartItemGalleryControls">
+                <img src={`${gallery[this.state.currentImage]}`} className="cartItemGalleryImage" alt="cart item gallery" />
+                {gallery.length > 1 && <div className="cartItemGalleryControls">
                     <div className="cartItemGalleryLeft" onClick={this.handleGalleryNav}>{"<"}</div>
                     <div className="cartItemGalleryRight" onClick={this.handleGalleryNav}>{">"}</div>
                 </div>}

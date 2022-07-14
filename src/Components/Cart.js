@@ -15,43 +15,45 @@ export default class Cart extends Component{
     }
 
     componentDidUpdate(){
+        const {currentCurrency} = this.props;
         //calculate total and amount and manually replace it in the DOM
         this.total = 0
         this.amount = 0
-        let cartItems = document.querySelectorAll('.cartItem')
+        const cartItems = document.querySelectorAll('.cartItem')
         cartItems.forEach(cartItem=>{
             this.total += parseFloat(cartItem.getAttributeNode("price").value) * parseInt(cartItem.getAttributeNode("amount").value)
             this.amount += parseInt(cartItem.getAttributeNode("amount").value)
         })
-        let cartTotalElement = document.querySelector(".cartTotalValue")
-        cartTotalElement.innerText = this.props.currentCurrency + `${this.total.toFixed(2)}`
-        let cartQuantityElement = document.querySelector(".cartQuantityValue")
+        const cartTotalElement = document.querySelector(".cartTotalValue")
+        cartTotalElement.innerText = currentCurrency + `${this.total.toFixed(2)}`
+        const cartQuantityElement = document.querySelector(".cartQuantityValue")
         cartQuantityElement.innerText = this.amount
-        let cartTaxElement = document.querySelector(".cartTaxValue")
-        cartTaxElement.innerText = this.props.currentCurrency + `${(this.total * 0.21).toFixed(2)}`
+        const cartTaxElement = document.querySelector(".cartTaxValue")
+        cartTaxElement.innerText = currentCurrency + `${(this.total * 0.21).toFixed(2)}`
     }
 
     render(){
-        this.total = 0
-        this.amount = 0
-        let cartItems = document.querySelectorAll('.cartItem')
+        const {cart, currentCurrency, changeCart} = this.props;
+        this.total = 0;
+        this.amount = 0;
+        const cartItems = document.querySelectorAll('.cartItem');
         cartItems.forEach(cartItem=>{
             this.total += parseFloat(cartItem.getAttributeNode("price").value) * parseInt(cartItem.getAttributeNode("amount").value)
             this.amount += parseInt(cartItem.getAttributeNode("amount").value)
         })
         this.cartElements = []
-        Object.keys(this.props.cart).forEach((productId, index)=>{
-            if(typeof this.props.cart[productId] === 'number'){
+        Object.keys(cart).forEach((productId, index)=>{
+            if(typeof cart[productId] === 'number'){
                 //this is a single attribute type product eg. apple airtag
                 this.cartElements.push(
-                    <CartItem currentCurrency={this.props.currentCurrency} changeCart={this.props.changeCart} key={index} productId={productId} amount={this.props.cart[productId]}/>
+                    <CartItem currentCurrency={currentCurrency} changeCart={changeCart} key={index} productId={productId} amount={cart[productId]}/>
                 )
             }else{
                 // this is a varible attribute type product eg. ps-5
-                Object.keys(this.props.cart[productId]).forEach((attributeCombinationString, innerIndex)=>{
-                    let attributeCombination = JSON.parse(attributeCombinationString)
+                Object.keys(cart[productId]).forEach((attributeCombinationString, innerIndex)=>{
+                    const attributeCombination = JSON.parse(attributeCombinationString)
                     this.cartElements.push(
-                        <CartItem currentCurrency={this.props.currentCurrency} changeCart={this.props.changeCart} key={`${index}-${innerIndex}`} productId={productId} amount={this.props.cart[productId][attributeCombinationString]} attributeCombination={attributeCombination}/>
+                        <CartItem currentCurrency={currentCurrency} changeCart={changeCart} key={`${index}-${innerIndex}`} productId={productId} amount={cart[productId][attributeCombinationString]} attributeCombination={attributeCombination}/>
                     )
                 })
             }
@@ -67,7 +69,7 @@ export default class Cart extends Component{
                 <div className="cartOrder">
                     <div className="cartTax">
                         <div className="cartLabel">Tax {this.state.tax}%:</div> 
-                        <div className="cartTaxValue">{this.props.currentCurrency}{(this.total*this.state.tax/100).toFixed(2)}</div>
+                        <div className="cartTaxValue">{currentCurrency}{(this.total*this.state.tax/100).toFixed(2)}</div>
                     </div>
                     <div className="cartQuantity">
                         <div className="cartLabel">Quantity:</div>
@@ -75,7 +77,7 @@ export default class Cart extends Component{
                     </div>
                     <div className="cartTotal">
                         <div className="cartLabel">Total:</div>
-                        <div className="cartTotalValue">{this.props.currentCurrency}{this.total.toFixed(2)}</div>
+                        <div className="cartTotalValue">{currentCurrency}{this.total.toFixed(2)}</div>
                     </div>
                     <div className="cartOrderButton">ORDER</div>
                 </div>

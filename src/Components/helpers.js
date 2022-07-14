@@ -6,8 +6,7 @@ export const graphFetch = async(query) => {
             query: query
         })
     }
-    let data = await fetch('http://localhost:4000', fetchOptions)
-    data = await data.json();
+    const data = await fetch('http://localhost:4000', fetchOptions);
         
-    return data.data
+    return await data.json().data
 }

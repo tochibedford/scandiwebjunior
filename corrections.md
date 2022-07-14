@@ -4,8 +4,7 @@
 
 ### -<u>quick and easy</u>
 
-* Please use variable destructuring</br>
-* Prefer using const instead of var or let</br>
+
 
 
 ### -<u>mid-level but quickly do-able</u>
@@ -27,8 +26,17 @@
 
 
 ## <u>Done</u>
-> Scrollbar shouldn’t be used for description, only in minicart.</br>
-> Products should be aligned to the left in a row</br>
-> Price should always have two digits after dot</br>
-> Currency switcher animation is too slow</br>
-> Qty badge should not show 9+ qty should always be concrete qty</br>
+
+### -<u>quick and easy</u>
+> * Scrollbar shouldn’t be used for description, only in minicart.</br>
+> * Products should be aligned to the left in a row</br>
+> * Price should always have two digits after dot</br>
+> * Currency switcher animation is too slow</br>
+> * Qty badge should not show 9+ qty should always be concrete qty</br>
+> * Please use variable destructuring</br>
+> * Prefer using const instead of var or let</br>
+
+### -<u>heavy lifting, might require major changes to the code</u>
+
+
+### -<u>unsure, and needs clarity from the team</u>

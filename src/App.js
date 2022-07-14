@@ -45,7 +45,7 @@ export default class App extends Component{
     }
 
     componentDidMount(){
-        let query = `
+        const query = `
             query{
 
                 categories{
@@ -54,7 +54,7 @@ export default class App extends Component{
             }
         `
         graphFetch(query).then(data=>{
-            let categories = []
+            const categories = []
             data.categories.forEach((category)=>{categories.push(category.name.charAt(0).toUpperCase()+category.name.slice(1))})
             this.setState(()=>{
                 return({

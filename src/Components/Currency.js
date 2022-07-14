@@ -20,9 +20,10 @@ export default class Currency extends Component{
     }
 
     componentDidMount(){
-        let comp = this
+        const {currentCurrency} = this.props;
+        const comp = this
         document.addEventListener("click", (e) => {
-            let element = document.querySelector('.styledSelect')
+            const element = document.querySelector('.styledSelect')
             if (e.target !== element && !element.contains(e.target)) {
                 if(comp.state.droppedDown){
                     comp.setState((prevState)=>{
@@ -36,7 +37,7 @@ export default class Currency extends Component{
         this.currenciesArray = []
         this.currencies = []
         this.currenciesNormal = []
-        let query = `
+        const query = `
             query{
                 currencies{
                     label
@@ -45,21 +46,21 @@ export default class Currency extends Component{
             }
         `
         graphFetch(query).then(data=>{
-            let currencies = []
+            const currencies = []
             data.currencies.forEach((currency)=>{
                 currencies.push(currency)
             })
             this.currenciesArray = currencies;
             this.setState(()=>{
                 return({
-                    currency: this.props.currentCurrency, // set up default currency as dollar (change this to the last one in localStorage)
+                    currency: currentCurrency, 
                     currencies: currencies
                 })
             })
         }).then(()=>{
             // list of Currency Element
-            let currencies = []
-            let currenciesNormal = []
+            const currencies = []
+            const currenciesNormal = []
             this.currenciesArray.forEach((currency, index)=>{
                 currencies.push(
                     <option value={currency.symbol} key={index}>
@@ -98,9 +99,10 @@ export default class Currency extends Component{
     }
 
     handleChangeCurrency(event){
-        let text = event.target.innerText
-        let regex = "^[a-zA-Z][^a-zA-Z0-9]|^[^a-zA-Z0-9]"
-        let curr = text.match(regex)[0]
+        const {changeCurrentCurrency, refreshBodyOnChangeCurrency} = this.props;
+        const text = event.target.innerText
+        const regex = "^[a-zA-Z][^a-zA-Z0-9]|^[^a-zA-Z0-9]"
+        const curr = text.match(regex)[0]
         this.selectRef.current.style.width = `${curr.length*10}px`
         if(this.state.currency !== text.match(regex)[0]){ //makes sure it doesn't refresh if same currency is clicked
             localStorage.setItem('currency', text.match(regex)[0])
@@ -109,8 +111,8 @@ export default class Currency extends Component{
                         currency: text.match(regex)[0]
                     }
             })
-            this.props.changeCurrentCurrency(text.match(regex)[0])
-            this.props.refreshBodyOnChangeCurrency(event);
+            changeCurrentCurrency(text.match(regex)[0])
+            refreshBodyOnChangeCurrency(event);
         }
     }
 

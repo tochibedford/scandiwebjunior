@@ -28,10 +28,10 @@ class ProductDescription extends Component {
     }
 
     componentDidMount(){
-        let productId = window.location.pathname.split('/product/')
-        productId = productId[productId.length-1]
+        const locationList = window.location.pathname.split('/product/')
+        const productId = locationList[locationList.length-1]
 
-        let query = `
+        const query = `
             query{
                 product(id:"${productId}"){
                     id
@@ -121,13 +121,14 @@ class ProductDescription extends Component {
     }
 
     handleAddToCart(event){
+        const {cart, changeCart} = this.props;
         if(!this.state.inStock){
             return
         }
         
         /*
         get a list of all attributes for the current item
-        save to this.props.cart as:
+        save to cart variable as:
         cart = {
             productId: {
                 String(
@@ -163,50 +164,49 @@ class ProductDescription extends Component {
         */
        
         if(this.state.attributes.length<1){
-            this.props.cart[`${this.state.id}`]? this.props.cart[`${this.state.id}`]+= 1:this.props.cart[`${this.state.id}`]=1
-            this.props.changeCart(
-                this.props.cart
+            cart[`${this.state.id}`]? cart[`${this.state.id}`]+= 1:cart[`${this.state.id}`]=1
+            changeCart(
+                cart
             )
-            localStorage.setItem('cart',JSON.stringify(this.props.cart))
+            localStorage.setItem('cart',JSON.stringify(cart))
             
         }else{
-            let activeSwatchAttributes = this.productDescriptionRef.current.querySelectorAll('.attributeSwatchActive')
-            let activeTextAttributes = this.productDescriptionRef.current.querySelectorAll('.attributeTextActive')
-            let activeAttributes = [...activeSwatchAttributes, ...activeTextAttributes]
-            let selectedAttributesForCart = {}
+            const activeSwatchAttributes = this.productDescriptionRef.current.querySelectorAll('.attributeSwatchActive')
+            const activeTextAttributes = this.productDescriptionRef.current.querySelectorAll('.attributeTextActive')
+            const activeAttributes = [...activeSwatchAttributes, ...activeTextAttributes]
+            const selectedAttributesForCart = {}
             activeAttributes.forEach((attrib, index)=>{
-                let parentId = attrib.parentElement.parentElement.id
-                let id = attrib.id
+                const parentId = attrib.parentElement.parentElement.id
+                const id = attrib.id
                 selectedAttributesForCart[parentId]=id
             })
-            let selectedAttributesForCartString = JSON.stringify(selectedAttributesForCart)
-            if(this.props.cart[`${this.state.id}`]){
-                if(this.props.cart[`${this.state.id}`][selectedAttributesForCartString]){
-                    this.props.cart[`${this.state.id}`][selectedAttributesForCartString] += 1 
+            const selectedAttributesForCartString = JSON.stringify(selectedAttributesForCart)
+            if([`${this.state.id}`]){
+                if(cart[`${this.state.id}`][selectedAttributesForCartString]){
+                    cart[`${this.state.id}`][selectedAttributesForCartString] += 1 
                 }else{
-                    this.props.cart[`${this.state.id}`][selectedAttributesForCartString] = 1
+                    cart[`${this.state.id}`][selectedAttributesForCartString] = 1
                 }
             }else{
-                this.props.cart[`${this.state.id}`]={}
-                this.props.cart[`${this.state.id}`][selectedAttributesForCartString]= 1
+                cart[`${this.state.id}`]={}
+                cart[`${this.state.id}`][selectedAttributesForCartString]= 1
             }
-            let oldCart = localStorage.getItem('cart') // string
-            oldCart = JSON.parse(oldCart) //Json
-            oldCart = {
+            const oldCart = JSON.parse(localStorage.getItem('cart')) 
+            const newCart = {
                 ...oldCart,
-                ...this.props.cart
+                ...cart
             }
-            this.props.changeCart(
-                oldCart
+            changeCart(
+                newCart
             )
-            oldCart = JSON.stringify(oldCart) //string
-            localStorage.setItem('cart', oldCart)
+            localStorage.setItem('cart', JSON.stringify(newCart))
         }
         
 
     }
 
     render(){
+        const {currentCurrency} = this.props;
         if(this.state.gallery){
             this.galleryImageElements = []
             this.state.gallery.forEach((galleryImageLink, index)=> {
@@ -218,8 +218,8 @@ class ProductDescription extends Component {
             });
         }
         if(this.state.attributes){
-            let productId = window.location.pathname.split('/product/')
-            productId = productId[productId.length-1]
+            const locationList = window.location.pathname.split('/product/')
+            const productId = locationList[locationList.length-1]
             this.attributeElements = []
             this.state.attributes.forEach((attribute, index)=>{
                 this.attributeElements.push(<Attribute key={index} changeable={true} productId={productId} attribute={attribute} index={index}/>)
@@ -227,7 +227,7 @@ class ProductDescription extends Component {
         }
         if(this.state.prices){
             this.priceResult = this.state.prices.filter(price=>{
-                return price.currency.symbol === this.props.currentCurrency;
+                return price.currency.symbol === currentCurrency;
             })
         }
         return (
@@ -249,7 +249,7 @@ class ProductDescription extends Component {
                             {this.attributeElements}
                         </> }
                         <p className="attributeName">PRICE:</p>
-                        {this.state.prices && <p className="productPricePDP">{this.props.currentCurrency}{this.priceResult[0].amount.toFixed(2)}</p>}
+                        {this.state.prices && <p className="productPricePDP">{currentCurrency}{this.priceResult[0].amount.toFixed(2)}</p>}
                         {this.state.inStock? <div className="addToCartLargeButton" onClick={this.handleAddToCart}>ADD TO CART</div>:
                         <div className="addToCartLargeButton disabledAddToCart" onClick={this.handleAddToCart}>OUT OF STOCK</div>}
                         <div className="productInterDescription">

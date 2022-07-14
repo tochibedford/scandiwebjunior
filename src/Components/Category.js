@@ -6,9 +6,10 @@ import {graphFetch} from './helpers'
 class Category extends Component {
     constructor(props){
         super(props);
+        const {match} = this.props;
         this.refreshBody = this.refreshBody.bind(this)
         this.state={
-            currentCategory: this.props.match.params.category,
+            currentCategory: match.params.category,
             productElements: [],
             propertiesPDP: []
         }
@@ -16,8 +17,8 @@ class Category extends Component {
     }
 
     refreshBody(cat){
-        
-        let query = `
+        const {cart, changeCart, currentCurrency} = this.props;
+        const query = `
         query{
             category(input: { title: "${cat.toLowerCase()}" }) {
                 products {
@@ -59,9 +60,9 @@ class Category extends Component {
                     gallery={product.gallery}
                     brand={product.brand}
                     prices={product.prices}
-                    cart = {this.props.cart}
-                    changeCart={this.props.changeCart}
-                    currentCurrency={this.props.currentCurrency}
+                    cart = {cart}
+                    changeCart={changeCart}
+                    currentCurrency={currentCurrency}
                     />
                 )
             })
@@ -80,10 +81,10 @@ class Category extends Component {
     }
 
     componentDidMount(){
-
-        this.props.refreshBodyContainer.push(this.refreshBody)
-        let cat = this.props.match.params.category
-        let query = `
+        const {refreshBodyContainer, match, cart, changeCart, currentCurrency} = this.props;
+        refreshBodyContainer.push(this.refreshBody)
+        const cat = match.params.category
+        const query = `
         query{
             category(input: { title: "${cat.toLowerCase()}" }) {
                 products {
@@ -126,9 +127,9 @@ class Category extends Component {
                     brand={product.brand}
                     prices={product.prices}
                     attributes={product.attributes}
-                    cart = {this.props.cart}
-                    changeCart={this.props.changeCart}
-                    currentCurrency={this.props.currentCurrency}
+                    cart = {cart}
+                    changeCart={changeCart}
+                    currentCurrency={currentCurrency}
                     />
                 )
             })
