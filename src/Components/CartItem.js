@@ -148,7 +148,7 @@ export default class CartItem extends Component{
                             <div className='cartItemInfo'>
                                 {this.state.brandName && <div className="cartItemBrandName">{this.state.brandName}</div>}  
                                 {this.state.productName && <div className="cartItemProductName">{this.state.productName}</div>}  
-                                {this.state.prices && <div className="cartItemPrice">{this.props.currentCurrency}{this.priceResult[0].amount}</div>}  
+                                {this.state.prices && <div className="cartItemPrice">{this.props.currentCurrency}{this.priceResult[0].amount.toFixed(2)}</div>}  
                                 {this.state.attributes && <div className="cartItemAttributes">{this.attributeElements}</div>}  
                             </div>
                             <div className="cartItemQuantity">
@@ -167,7 +167,7 @@ export default class CartItem extends Component{
                             <div className='miniCartItemInfo'>
                                 {this.state.brandName && <div className="miniCartItemBrandName">{this.state.brandName}</div>}  
                                 {this.state.productName && <div className="miniCartItemProductName">{this.state.productName}</div>}  
-                                {this.state.prices && <div className="miniCartItemPrice">{this.props.currentCurrency}{this.priceResult[0].amount}</div>}  
+                                {this.state.prices && <div className="miniCartItemPrice">{this.props.currentCurrency}{this.priceResult[0].amount.toFixed(2)}</div>}  
                                 {this.state.attributes && <div className="miniCartItemAttributes">{this.attributeElements}</div>}  
                             </div>
                             <div className="miniCartItemQuantity">
@@ -189,7 +189,7 @@ export default class CartItem extends Component{
                         <div className="cartItemInfo">
                             {this.state.brandName && <div className="cartItemBrandName">{this.state.brandName}</div>}  
                             {this.state.productName && <div className="cartItemProductName">{this.state.productName}</div>}  
-                            {this.state.prices && <div className="cartItemPrice">{this.props.currentCurrency}{this.priceResult[0].amount}</div>}
+                            {this.state.prices && <div className="cartItemPrice">{this.props.currentCurrency}{this.priceResult[0].amount.toFixed(2)}</div>}
                         </div>
                         <div className="cartItemQuantity">
                             <div className="cartItemQuantityIncrease" onClick={this.handleCartQuantityChange}>+</div>
@@ -207,7 +207,7 @@ export default class CartItem extends Component{
                         <div className="miniCartItemInfo">
                             {this.state.brandName && <div className="miniCartItemBrandName">{this.state.brandName}</div>}  
                             {this.state.productName && <div className="miniCartItemProductName">{this.state.productName}</div>}  
-                            {this.state.prices && <div className="miniCartItemPrice">{this.props.currentCurrency}{this.priceResult[0].amount}</div>}
+                            {this.state.prices && <div className="miniCartItemPrice">{this.props.currentCurrency}{this.priceResult[0].amount.toFixed(2)}</div>}
                         </div>
                         <div className="miniCartItemQuantity">
                             <div className="miniCartItemQuantityIncrease" onClick={this.handleCartQuantityChange}>+</div>

@@ -155,7 +155,7 @@ body {
   font-weight: 600;
   font-size: 0.9em;
   margin-left: 0.5em;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.1s ease-in-out;
   transform-origin: 4px 10.5px;
 }
 
@@ -166,7 +166,7 @@ body {
   top: 70%;
   transform: translateX(-25%);
   overflow: hidden;
-  transition: height 0.5s ease-in-out;
+  transition: height 0.1s ease-in-out;
   width: 114px;
   display: flex;
   flex-direction: column;
@@ -178,7 +178,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background-color 0.5s;
+  transition: background-color 0.2s;
   height: 100%;
 }
 
@@ -209,10 +209,8 @@ body {
 .products{
   height: 100%;
   display: grid;
-  justify-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2em 1em;
-  
 }
 
 .product{
@@ -286,7 +284,7 @@ body {
   bottom: -20px;
   right: 15px;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.2s;
   z-index: 50;
 }
 
@@ -497,26 +495,12 @@ a.productLink{
 
 .productInterDescription{
   margin-top: 2.5em;
-  height: 10em;
-  overflow-y: scroll;
-  
+  height: max-content;
 }
 
 .productInterDescription li{
   margin-left: 1em;
 }
-
-/* on MAC OS Scrollbar doesn't show unless user is currently scrolling - to fix: */
-/* .productInterDescription::-webkit-scrollbar {
-  -webkit-appearance: none;
-  width: 7px;
-}
-
-.productInterDescription::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, .5);
-  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-} */
 
 .cartContainer{
   font-size: 0.8em;

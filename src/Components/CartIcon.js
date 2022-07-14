@@ -43,8 +43,7 @@ export default class CartIcon extends Component{
         
         return(
             <div className="cartIconContainer" onClick={this.handleCartIconClick}>
-                {/* counter only shows count less than 10, anything above becomes 9+ */}
-                {this.state.cart && this.count<10 ? <div className="cartCounter">{this.count}</div>:<div className="cartCounter">9+</div>}
+                {this.state.cart && <div className="cartCounter">{this.count}</div>}
                 <img className="cart" src={cartIcon} alt="shopping cart icon"/>
                 <MiniCart showMiniCart={this.state.miniCartShow} amount={this.count} currentCurrency={this.props.currentCurrency} cart={this.props.cart} changeCart={this.props.changeCart}/>
             </div>

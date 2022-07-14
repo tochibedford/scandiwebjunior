@@ -249,7 +249,7 @@ class ProductDescription extends Component {
                             {this.attributeElements}
                         </> }
                         <p className="attributeName">PRICE:</p>
-                        {this.state.prices && <p className="productPricePDP">{this.props.currentCurrency}{this.priceResult[0].amount}</p>}
+                        {this.state.prices && <p className="productPricePDP">{this.props.currentCurrency}{this.priceResult[0].amount.toFixed(2)}</p>}
                         {this.state.inStock? <div className="addToCartLargeButton" onClick={this.handleAddToCart}>ADD TO CART</div>:
                         <div className="addToCartLargeButton disabledAddToCart" onClick={this.handleAddToCart}>OUT OF STOCK</div>}
                         <div className="productInterDescription">
