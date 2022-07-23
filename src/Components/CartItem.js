@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import Attribute from './Attribute';
 import CartItemGallery from './CartItemGallery';
-import { graphFetch } from './helpers';
+import { graphFetch, productQuery } from './helpers';
 
 export default class CartItem extends Component{
     constructor(props){
@@ -20,38 +20,9 @@ export default class CartItem extends Component{
 
     componentDidMount(){
         const {productId, currentCurrency} = this.props;
-        const query = `
-            query{
-                product(id:"${productId}"){
-                    id
-                    name
-                    inStock
-                    gallery
-                    category
-                    prices{
-                        currency{
-                            label
-                            symbol
-                        }
-                        amount
-                    }
-                    brand
-                    attributes{
-                        id
-                        name
-                        type
-                        items{
-                            id
-                            value
-                            displayValue
-                        }
-                    }
-                    
-                }
-            }
-        `
-        graphFetch(query).then(data=>{
-            data = data.product
+        
+        graphFetch(productQuery(productId)).then(data=>{
+            data = data.data.product
             this.priceResult = data.prices.filter(price=>{
                 return price.currency.symbol === currentCurrency;
             })

@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import Navbar from './Components/Navbar'
 import Category from './Components/Category'
-import {graphFetch} from './Components/helpers'
+import {categoriesQuery, graphFetch} from './Components/helpers'
 import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom'
 import ProductDescription from './Components/ProductDescription'
 import Cart from './Components/Cart'
@@ -45,17 +45,10 @@ export default class App extends Component{
     }
 
     componentDidMount(){
-        const query = `
-            query{
-
-                categories{
-                    name
-                }
-            }
-        `
-        graphFetch(query).then(data=>{
-            const categories = []
-            data.categories.forEach((category)=>{categories.push(category.name.charAt(0).toUpperCase()+category.name.slice(1))})
+        
+        graphFetch(categoriesQuery()).then(data=>{
+            const categories = [];
+            data.data.categories.forEach((category)=>{categories.push(category.name.charAt(0).toUpperCase()+category.name.slice(1))})
             this.setState(()=>{
                 return({
                     category: categories[0],

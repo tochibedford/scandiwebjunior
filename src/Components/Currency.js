@@ -1,5 +1,5 @@
 import { Component, createRef } from 'react'
-import {graphFetch} from './helpers'
+import {currenciesQuery, graphFetch} from './helpers'
 
 export default class Currency extends Component{
     constructor(props){
@@ -37,18 +37,11 @@ export default class Currency extends Component{
         this.currenciesArray = []
         this.currencies = []
         this.currenciesNormal = []
-        const query = `
-            query{
-                currencies{
-                    label
-                    symbol
-                }
-            }
-        `
-        graphFetch(query).then(data=>{
-            const currencies = []
-            data.currencies.forEach((currency)=>{
-                currencies.push(currency)
+        
+        graphFetch(currenciesQuery()).then(data=>{ 
+            const currencies = [];
+            data.data.currencies.forEach((currency)=>{
+                currencies.push(currency);
             })
             this.currenciesArray = currencies;
             this.setState(()=>{
@@ -122,7 +115,7 @@ export default class Currency extends Component{
                 <select ref={this.selectRef} value={this.state.currency} onChange={this.handleDrop} disabled className="currency currencyDropDown">
                     {this.currencies}
                 </select>
-                <div className="dropDownArrow" ref={this.dropDownArrowRef} style={this.dropDownStyle}> ^ </div>
+                <div className="dropDownArrow" ref={this.dropDownArrowRef}> ^ </div>
                 <div className='dropDown' ref={this.dropDownRef}>
                     {this.currenciesNormal}
                 </div>

@@ -45,9 +45,9 @@ export default class Attribute extends Component{
                         {attribute.items.map((item, ind)=>{
                             if(selectedAttribute){
                                 if(`${ind}` === selectedAttribute){
-                                    return(<li className="attributeSwatch attributeSwatchActive" id={ind} key={ind} onClick={this.handleChangeAttribute}> <div className={`attributeSwatchInner attributeItem`} style={{background:item.value, cursor: "default"}}></div> </li>)
+                                    return(<li className="attributeSwatch attributeSwatchActive" id={ind} key={ind} onClick={this.handleChangeAttribute}> <div className={`attributeSwatchInner attributeItem`} style={{background:item.value}}></div> </li>)
                                 }else{
-                                    return(<li className="attributeSwatch" id={ind} key={ind} onClick={this.handleChangeAttribute}> <div className={`attributeSwatchInner attributeItem`} style={{background:item.value, cursor: "default"}}></div> </li>)
+                                    return(<li className="attributeSwatch" id={ind} key={ind} onClick={this.handleChangeAttribute}> <div className={`attributeSwatchInner attributeItem`} style={{background:item.value}}></div> </li>)
                                 }
                             }else{   
                                 if(`${ind}` === this.state.selected){
@@ -70,9 +70,9 @@ export default class Attribute extends Component{
                         {attribute.items.map((item, ind)=>{
                             if(selectedAttribute){
                                 if(`${ind}` === selectedAttribute){
-                                    return(<li className="attributeItem attributeText attributeTextActive" style={{cursor: "default"}} id={ind} key={ind} onClick={this.handleChangeAttribute}>{item.value}</li>)
+                                    return(<li className="attributeItem attributeText attributeTextActive" id={ind} key={ind} onClick={this.handleChangeAttribute}>{item.value}</li>)
                                 }else{
-                                    return(<li className="attributeItem attributeText" style={{cursor: "default"}} id={ind} key={ind} onClick={this.handleChangeAttribute}>{item.value}</li>)
+                                    return(<li className="attributeItem attributeText" id={ind} key={ind} onClick={this.handleChangeAttribute}>{item.value}</li>)
                                 }
                             }else{
                                 if(`${ind}` === this.state.selected){

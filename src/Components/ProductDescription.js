@@ -2,7 +2,7 @@ import { Component, createRef } from 'react'
 import { withRouter } from 'react-router-dom';
 import Attribute from './Attribute';
 import { Interweave } from 'interweave';
-import {graphFetch} from './helpers'
+import {graphFetch, productWithDescriptionQuery} from './helpers'
 
 
 class ProductDescription extends Component {
@@ -12,11 +12,8 @@ class ProductDescription extends Component {
         this.mainImagePDPRef = createRef()
         this.productDescriptionRef = createRef()
         this.handleAddToCart = this.handleAddToCart.bind(this)
-        this.handleGalleryScroll = this.handleGalleryScroll.bind(this)
         this.handleClickGalleryImage = this.handleClickGalleryImage.bind(this)
         this.state = {
-            galleryAtTop: true,
-            galleryAtBottom: false,
             gallery: null,
             brandName: null,
             productName: null,
@@ -31,39 +28,9 @@ class ProductDescription extends Component {
         const locationList = window.location.pathname.split('/product/')
         const productId = locationList[locationList.length-1]
 
-        const query = `
-            query{
-                product(id:"${productId}"){
-                    id
-                    name
-                    inStock
-                    gallery
-                    description
-                    category
-                    prices{
-                        currency{
-                            label
-                            symbol
-                        }
-                        amount
-                    }
-                    brand
-                    attributes{
-                        id
-                        name
-                        type
-                        items{
-                            id
-                            value
-                            displayValue
-                        }
-                    }
-                    
-                }
-            }
-        `
-        graphFetch(query).then(data=>{
-            data = data.product
+        
+        graphFetch(productWithDescriptionQuery(productId)).then(data=>{
+            data = data.data.product
             this.setState(()=>{
                 return{
                     id: data.id,
@@ -74,46 +41,9 @@ class ProductDescription extends Component {
                     prices: data.prices,
                     description: data.description,
                     inStock: data.inStock
-                    // put other data here
                 }
             })
         })
-    }
-
-    handleGalleryScroll(event){
-        if(event.target.parentElement.scrollTop){
-            this.setState(()=>{
-                
-                return({
-                    galleryAtTop: false
-                })
-            })
-        }else{
-            this.setState(()=>{
-                return({
-                    galleryAtTop: true
-                })
-            })
-            
-        }
-        if(event.target.parentElement.scrollTop >= event.target.parentElement.scrollHeight-500){
-            this.setState(()=>{
-                return({
-                    galleryAtBottom: true
-                })
-            })
-        }else{
-            this.setState(()=>{
-                return({
-                    galleryAtBottom: false
-                })
-            })
-        }
-        if(event.target.classList.contains('scrollUpGallery')){    
-            event.target.parentElement.scrollBy(0,-50)
-        }else{
-            event.target.parentElement.scrollBy(0,50)
-        }
     }
 
     handleClickGalleryImage(event){
@@ -181,7 +111,7 @@ class ProductDescription extends Component {
                 selectedAttributesForCart[parentId]=id
             })
             const selectedAttributesForCartString = JSON.stringify(selectedAttributesForCart)
-            if([`${this.state.id}`]){
+            if(cart[`${this.state.id}`]){
                 if(cart[`${this.state.id}`][selectedAttributesForCartString]){
                     cart[`${this.state.id}`][selectedAttributesForCartString] += 1 
                 }else{
@@ -233,9 +163,7 @@ class ProductDescription extends Component {
         return (
             <div className="productDescriptionPortal">
                 <div className="galleryPDP">
-                    {this.galleryImageElements && this.galleryImageElements.length>3 && <div className={`scrollUpGallery ${this.state.galleryAtTop?"hideScrollButton":" "}`} onClick={this.handleGalleryScroll}>^</div>}
                     {this.galleryImageElements}
-                    {this.galleryImageElements && this.galleryImageElements.length>3 && <div className={`scrollDownGallery ${this.state.galleryAtBottom?"hideScrollButton":" "}`} onClick={this.handleGalleryScroll}>^</div>}
                 </div>
                 <div className="mainImagePDP">
                     {this.state.gallery && <img className="mainImage" src={this.state.gallery[0]} ref={this.mainImagePDPRef} alt="product description main"/>}

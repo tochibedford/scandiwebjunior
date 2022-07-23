@@ -10,9 +10,6 @@
 ### -<u>mid-level but quickly do-able</u>
 
 * Missing out of stock labels on PDP</br>
-* Image list on PDP scrolling is broken, it rather be scroll-able or as vertical slider</br>
-* Please move all queries in separate file and import them in needed places</br>
-* Please do not use static styles in style prop</br>
 
 
 
@@ -35,6 +32,11 @@
 > * Qty badge should not show 9+ qty should always be concrete qty</br>
 > * Please use variable destructuring</br>
 > * Prefer using const instead of var or let</br>
+
+### -<u>mid-level but quickly do-able</u>
+* Image list on PDP scrolling is broken, it rather be scroll-able or as vertical slider</br>
+* Please move all queries in separate file and import them in needed places</br>
+* Please do not use static styles in style prop</br>
 
 ### -<u>heavy lifting, might require major changes to the code</u>
 

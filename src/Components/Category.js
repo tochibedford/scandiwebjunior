@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom';
 import Product from '../Components/Product'
-import {graphFetch} from './helpers'
+import {categoryQuery, graphFetch} from './helpers'
 
 class Category extends Component {
     constructor(props){
@@ -18,39 +18,9 @@ class Category extends Component {
 
     refreshBody(cat){
         const {cart, changeCart, currentCurrency} = this.props;
-        const query = `
-        query{
-            category(input: { title: "${cat.toLowerCase()}" }) {
-                products {
-                    id
-                    name
-                    inStock
-                    gallery
-                    brand
-                    prices{
-                      currency{
-                        label
-                        symbol
-                      }
-                      amount
-                    }
-                    attributes{
-                        id
-                        name
-                        type
-                        items{
-                            id
-                            value
-                            displayValue
-                        }
-                    }
-                }
-            }
-        }
-        `
-        graphFetch(query).then(data=>{
+        graphFetch(categoryQuery(cat)).then(data=>{
             this.productElements = []
-            data.category.products.forEach(product=>{
+            data.data.category.products.forEach(product=>{
                 this.productElements.push(
                     <Product 
                     key={product.id}
@@ -84,39 +54,10 @@ class Category extends Component {
         const {refreshBodyContainer, match, cart, changeCart, currentCurrency} = this.props;
         refreshBodyContainer.push(this.refreshBody)
         const cat = match.params.category
-        const query = `
-        query{
-            category(input: { title: "${cat.toLowerCase()}" }) {
-                products {
-                    id
-                    name
-                    inStock
-                    gallery
-                    brand
-                    prices{
-                      currency{
-                        label
-                        symbol
-                      }
-                      amount
-                    }
-                    attributes{
-                        id
-                        name
-                        type
-                        items{
-                            id
-                            value
-                            displayValue
-                        }
-                    }
-                }
-            }
-        }
-        `
-        graphFetch(query).then(data=>{
+
+        graphFetch(categoryQuery(cat)).then(data=>{
             this.productElements = []
-            data.category.products.forEach(product=>{
+            data.data.category.products.forEach(product=>{
                 this.productElements.push(
                     <Product 
                     key={product.id}
