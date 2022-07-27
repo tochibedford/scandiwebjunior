@@ -9,9 +9,6 @@
 
 ### -<u>mid-level but quickly do-able</u>
 
-* Missing out of stock labels on PDP</br>
-
-
 
 ### -<u>heavy lifting, might require major changes to the code</u>
 
@@ -37,6 +34,7 @@
 * Image list on PDP scrolling is broken, it rather be scroll-able or as vertical slider</br>
 * Please move all queries in separate file and import them in needed places</br>
 * Please do not use static styles in style prop</br>
+* Missing out of stock labels on PDP</br>
 
 ### -<u>heavy lifting, might require major changes to the code</u>
 
