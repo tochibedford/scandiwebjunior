@@ -136,7 +136,7 @@ class ProductDescription extends Component {
     }
 
     render(){
-        const {currentCurrency, inStock} = this.props;
+        const {currentCurrency} = this.props;
         if(this.state.gallery){
             this.galleryImageElements = []
             this.state.gallery.forEach((galleryImageLink, index)=> {
@@ -167,7 +167,7 @@ class ProductDescription extends Component {
                 </div>
                 <div className="mainImagePDP">
                     {this.state.gallery && <img className="mainImage" src={this.state.gallery[0]} ref={this.mainImagePDPRef} alt="product description main"/>}
-                    {!inStock && <div className="outOfStock">OUT OF STOCK</div>}
+                    {!this.state.inStock && <div className="outOfStock">OUT OF STOCK</div>}
                 </div>
                 <div className="productDescriptionPDP" ref={this.productDescriptionRef}>
                     <div className="productDescriptionPDPInner">

@@ -13,7 +13,6 @@ export default class Cart extends Component{
         this.amount = 0
         
     }
-
     componentDidUpdate(){
         const {currentCurrency} = this.props;
         //calculate total and amount and manually replace it in the DOM
@@ -58,6 +57,7 @@ export default class Cart extends Component{
                 })
             }
         })
+        
         return(
             <div className="cartContainer">
                 <div className="cartName">

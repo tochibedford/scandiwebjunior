@@ -94,6 +94,8 @@ const categoryQuery = (cat)=>{
                     name
                     inStock
                     gallery
+                    description
+                    category
                     brand
                     prices{
                       currency{

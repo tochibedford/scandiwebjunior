@@ -11,7 +11,7 @@
 
 
 ### -<u>heavy lifting, might require major changes to the code</u>
-
+* cart total now broken
 * Requests are duplicated</br>
 * Requesting product data for cart items is not best idea, better to save cart items in local or global storage</br>
 

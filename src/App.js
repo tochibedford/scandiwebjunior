@@ -45,10 +45,10 @@ export default class App extends Component{
     }
 
     componentDidMount(){
-        
         graphFetch(categoriesQuery()).then(data=>{
             const categories = [];
             data.data.categories.forEach((category)=>{categories.push(category.name.charAt(0).toUpperCase()+category.name.slice(1))})
+            localStorage.setItem("categories", JSON.stringify(categories));
             this.setState(()=>{
                 return({
                     category: categories[0],
@@ -56,6 +56,7 @@ export default class App extends Component{
                 })
             })
         })
+
         
     }
 
