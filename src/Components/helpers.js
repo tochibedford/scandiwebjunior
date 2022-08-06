@@ -1,26 +1,28 @@
-const currenciesQuery = ()=>{ 
-    return `
+const currenciesQuery = ()=>{
+    return [true, 'currencies', `
             query{
                 currencies{
                     label
                     symbol
                 }
             }
-        `
+        `]
 }
 const categoriesQuery = ()=>{
-    
-    return  `
+    return  [true, 'categories', `
             query{
 
                 categories{
                     name
                 }
             }
-        `
+        `]
 }
 const productQuery = (productId)=>{
-    return `
+    if (localStorage.getItem(productId)){
+        return [false, productId]
+    }
+    return [true, productId, `
         query{
             product(id:"${productId}"){
                 id
@@ -49,10 +51,13 @@ const productQuery = (productId)=>{
                 
             }
         }
-    `
+    `]
 }
 const productWithDescriptionQuery = (productId)=>{
-    return `
+    if (localStorage.getItem(productId)){
+        return [false, productId]
+    }
+    return [true, productId, `
             query{
                 product(id:"${productId}"){
                     id
@@ -82,13 +87,17 @@ const productWithDescriptionQuery = (productId)=>{
                     
                 }
             }
-        `
+        `]
 }
 
 const categoryQuery = (cat)=>{
-    return `
+    if (localStorage.getItem(cat)){
+        return [false, cat]
+    }
+    return [true, cat, `
         query{
             category(input: { title: "${cat.toLowerCase()}" }) {
+                name
                 products {
                     id
                     name
@@ -117,19 +126,24 @@ const categoryQuery = (cat)=>{
                 }
             }
         }
-        `
+        `]
 }
 const graphFetch = async(query) => {
-    const fetchOptions = {
-        method: 'POST',
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            query: query
-        })
+    if(query[0]){
+        const fetchOptions = {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                query: query[2]
+            })
+        }
+        const data = await fetch('http://localhost:4000', fetchOptions);
+        const innerData = await data.json();
+        localStorage.setItem(query[1], JSON.stringify(innerData))
+        return innerData;
+    }else{
+        return JSON.parse(localStorage.getItem(query[1]));
     }
-    const data = await fetch('http://localhost:4000', fetchOptions);
-    let innerData = data.json()
-    return innerData;
 }
 
 export {

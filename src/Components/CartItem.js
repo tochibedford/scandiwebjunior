@@ -20,25 +20,44 @@ export default class CartItem extends Component{
 
     componentDidMount(){
         const {productId, currentCurrency} = this.props;
-        
-        graphFetch(productQuery(productId)).then(data=>{
-            data = data.data.product
-            this.priceResult = data.prices.filter(price=>{
-                return price.currency.symbol === currentCurrency;
-            })
-            
+        if(localStorage.getItem('all')){
+            const data = JSON.parse(localStorage.getItem('all'))
+            const currentProduct = data.data.category.products.filter(product=>{
+                return product.id === productId
+            })[0]
+
             this.setState(()=>{
-                return{
-                    id: data.id,
-                    gallery: data.gallery,
-                    brandName: data.brand,
-                    productName: data.name,
-                    attributes: data.attributes,
-                    prices: data.prices,
-                    // put other data here
-                }
+                    return{
+                        id: currentProduct.id,
+                        gallery: currentProduct.gallery,
+                        brandName: currentProduct.brand,
+                        productName: currentProduct.name,
+                        attributes: currentProduct.attributes,
+                        prices: currentProduct.prices,
+                        // put other data here
+                    }
+                })
+        }else{
+            graphFetch(productQuery(productId)).then(data=>{
+                data = data.data.product
+                this.priceResult = data.prices.filter(price=>{
+                    return price.currency.symbol === currentCurrency;
+                })
+                
+                this.setState(()=>{
+                    return{
+                        id: data.id,
+                        gallery: data.gallery,
+                        brandName: data.brand,
+                        productName: data.name,
+                        attributes: data.attributes,
+                        prices: data.prices,
+                        // put other data here
+                    }
+                })
             })
-        })
+
+        }
     }
 
     handleCartQuantityChange(event){

@@ -55,34 +55,36 @@ class Category extends Component {
         refreshBodyContainer.push(this.refreshBody)
         const cat = match.params.category
 
-        graphFetch(categoryQuery(cat)).then(data=>{
-            this.productElements = []
-            data.data.category.products.forEach(product=>{
-                this.productElements.push(
-                    <Product 
-                    key={product.id}
-                    id={product.id}
-                    name={product.name}
-                    inStock={product.inStock}
-                    gallery={product.gallery}
-                    brand={product.brand}
-                    prices={product.prices}
-                    attributes={product.attributes}
-                    cart = {cart}
-                    changeCart={changeCart}
-                    currentCurrency={currentCurrency}
-                    />
-                )
-            })
-
-            this.setState(()=>{
-                return({
-                    productElements: this.productElements
+        if(this.state.productElements.length === 0){
+            graphFetch(categoryQuery(cat)).then(data=>{
+                this.productElements = []
+                data.data.category.products.forEach(product=>{
+                    this.productElements.push(
+                        <Product 
+                        key={product.id}
+                        id={product.id}
+                        name={product.name}
+                        inStock={product.inStock}
+                        gallery={product.gallery}
+                        brand={product.brand}
+                        prices={product.prices}
+                        attributes={product.attributes}
+                        cart = {cart}
+                        changeCart={changeCart}
+                        currentCurrency={currentCurrency}
+                        />
+                    )
                 })
+    
+                this.setState(()=>{
+                    return({
+                        productElements: this.productElements
+                    })
+                })
+                    
+    
             })
-                
-
-        })
+        }
     }
     
 
