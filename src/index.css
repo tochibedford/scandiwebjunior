@@ -58,7 +58,6 @@ body {
 
 .navLinks{
   list-style: none;
-  
   display: flex;
   flex: 1;
 }
@@ -121,6 +120,8 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  width:max-content;
+  min-width: 30px;
   
 }
 
@@ -138,11 +139,14 @@ body {
 
 .currencyDropDown{
   appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   width: 10px;
   border: none;
   font-size: 1.6rem;
   font-weight: 500;
   color: black;
+  background-color: var(--background);
 }
 
 .currencyDropDown:active, .currencyDropDown:focus {
@@ -298,8 +302,6 @@ body {
 }
 
 .productDescriptionPortal{
-  left: 0;
-  right: 0;
   background: var(--background);
   padding: 5%;
   width: 100%;
@@ -851,4 +853,36 @@ a.productLink{
   border: 1px solid var(--highlighter);
   color: white;
   margin-left: 0.25em;
+}
+
+@media screen and (max-width: 640px){
+
+  .products{
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+
+  .product{
+    width: 300px;
+  }
+
+  .productDescriptionPortal{
+    position: relative;
+    flex-direction: column;
+  }
+
+  .galleryPDP{
+    flex-direction: row;
+    min-width: 95%;
+    min-height: 150px;
+    height: 150px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    position: relative;
+    max-width: auto;
+    align-items: flex-start;
+  }
+
+  .galleryImageContainer{
+    min-width: 80px;
+  }
 }
