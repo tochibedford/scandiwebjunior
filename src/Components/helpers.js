@@ -132,7 +132,6 @@ const graphFetch = async(query) => {
     if(query[0]){
         const fetchOptions = {
             method: 'POST',
-            mode: 'cors',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 query: query[2]
