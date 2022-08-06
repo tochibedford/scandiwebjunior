@@ -137,7 +137,7 @@ const graphFetch = async(query) => {
                 query: query[2]
             })
         }
-        const data = await fetch('https://tochi-cors-anywhere.herokuapp.com/https://mockstore-endpoint.herokuapp.com:4000/', fetchOptions);
+        const data = await fetch('https://tochi-cors-anywhere.herokuapp.com/https://mockstore-endpoint.herokuapp.com/', fetchOptions);
         const innerData = await data.json();
         localStorage.setItem(query[1], JSON.stringify(innerData))
         return innerData;
