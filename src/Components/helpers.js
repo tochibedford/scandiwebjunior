@@ -132,12 +132,13 @@ const graphFetch = async(query) => {
     if(query[0]){
         const fetchOptions = {
             method: 'POST',
+            mode: 'cors',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 query: query[2]
             })
         }
-        const data = await fetch('http://localhost:4000', fetchOptions);
+        const data = await fetch('https://tochi-cors-anywhere.herokuapp.com/https://mockstore-endpoint.herokuapp.com:4000/', fetchOptions);
         const innerData = await data.json();
         localStorage.setItem(query[1], JSON.stringify(innerData))
         return innerData;
