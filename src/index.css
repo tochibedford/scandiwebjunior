@@ -698,7 +698,7 @@ a.productLink{
   transition: visibility 0s;
   position:fixed;
   width: 100vw;
-  height: 100vw;
+  height: 100vh;
   top: 80px;
   left: 0;
   z-index: 70;
