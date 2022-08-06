@@ -25,6 +25,7 @@ export default class CartItem extends Component{
             const currentProduct = data.data.category.products.filter(product=>{
                 return product.id === productId
             })[0]
+            // console.log(currentProduct)
 
             this.setState(()=>{
                     return{

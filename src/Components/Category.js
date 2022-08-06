@@ -30,6 +30,7 @@ class Category extends Component {
                     gallery={product.gallery}
                     brand={product.brand}
                     prices={product.prices}
+                    attributes={product.attributes}
                     cart = {cart}
                     changeCart={changeCart}
                     currentCurrency={currentCurrency}

@@ -34,7 +34,31 @@ class Product extends Component{
         const {id, attributes, cart, changeCart} = this.props;
         e.preventDefault()
         if(attributes.length>0){
-            window.location.href = `/product/${id}`
+            const selectedAttributesForCart = {}
+            this.props.attributes.forEach((attribute, index) => {
+                selectedAttributesForCart[index] = 0;
+            });
+            const selectedAttributesForCartString = JSON.stringify(selectedAttributesForCart)
+            if(cart[`${id}`]){
+                if(cart[`${id}`][selectedAttributesForCartString]){
+                    cart[`${id}`][selectedAttributesForCartString] += 1 
+                }else{
+                    cart[`${id}`][selectedAttributesForCartString] = 1
+                }
+            }else{
+                cart[`${id}`]={}
+                cart[`${id}`][selectedAttributesForCartString]= 1
+            }
+            const oldCart = JSON.parse(localStorage.getItem('cart')) 
+            const newCart = {
+                ...oldCart,
+                ...cart
+            }
+            changeCart(
+                newCart
+            )
+            localStorage.setItem('cart', JSON.stringify(newCart))
+            e.stopPropagation();
         }else{
             cart[`${id}`]? cart[`${id}`]+= 1:cart[`${id}`]=1
             changeCart(
