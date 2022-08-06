@@ -58,7 +58,6 @@ body {
 
 .navLinks{
   list-style: none;
-  
   display: flex;
   flex: 1;
 }
@@ -121,6 +120,8 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  width:max-content;
+  min-width: 30px;
   
 }
 
@@ -138,11 +139,14 @@ body {
 
 .currencyDropDown{
   appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
   width: 10px;
   border: none;
   font-size: 1.6rem;
   font-weight: 500;
   color: black;
+  background-color: var(--background);
 }
 
 .currencyDropDown:active, .currencyDropDown:focus {
@@ -155,7 +159,7 @@ body {
   font-weight: 600;
   font-size: 0.9em;
   margin-left: 0.5em;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.1s ease-in-out;
   transform-origin: 4px 10.5px;
 }
 
@@ -166,7 +170,7 @@ body {
   top: 70%;
   transform: translateX(-25%);
   overflow: hidden;
-  transition: height 0.5s ease-in-out;
+  transition: height 0.1s ease-in-out;
   width: 114px;
   display: flex;
   flex-direction: column;
@@ -178,7 +182,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background-color 0.5s;
+  transition: background-color 0.2s;
   height: 100%;
 }
 
@@ -209,10 +213,8 @@ body {
 .products{
   height: 100%;
   display: grid;
-  justify-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2em 1em;
-  
 }
 
 .product{
@@ -247,6 +249,7 @@ body {
 
 .outOfStock {
   position: absolute;
+  user-select: none;
   width: 100%;
   height: 100%;
   top: 0;
@@ -286,7 +289,7 @@ body {
   bottom: -20px;
   right: 15px;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.2s;
   z-index: 50;
 }
 
@@ -299,8 +302,6 @@ body {
 }
 
 .productDescriptionPortal{
-  left: 0;
-  right: 0;
   background: var(--background);
   padding: 5%;
   width: 100%;
@@ -368,6 +369,7 @@ body {
 }
 
 .mainImagePDP{
+  position: relative;
   flex: 3;
 }
 
@@ -497,26 +499,12 @@ a.productLink{
 
 .productInterDescription{
   margin-top: 2.5em;
-  height: 10em;
-  overflow-y: scroll;
-  
+  height: max-content;
 }
 
 .productInterDescription li{
   margin-left: 1em;
 }
-
-/* on MAC OS Scrollbar doesn't show unless user is currently scrolling - to fix: */
-/* .productInterDescription::-webkit-scrollbar {
-  -webkit-appearance: none;
-  width: 7px;
-}
-
-.productInterDescription::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, .5);
-  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-} */
 
 .cartContainer{
   font-size: 0.8em;
@@ -712,7 +700,7 @@ a.productLink{
   transition: visibility 0s;
   position:fixed;
   width: 100vw;
-  height: 100vw;
+  height: 100vh;
   top: 80px;
   left: 0;
   z-index: 70;
@@ -865,4 +853,36 @@ a.productLink{
   border: 1px solid var(--highlighter);
   color: white;
   margin-left: 0.25em;
+}
+
+@media screen and (max-width: 640px){
+
+  .products{
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+
+  .product{
+    width: 300px;
+  }
+
+  .productDescriptionPortal{
+    position: relative;
+    flex-direction: column;
+  }
+
+  .galleryPDP{
+    flex-direction: row;
+    min-width: 95%;
+    min-height: 150px;
+    height: 150px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    position: relative;
+    max-width: auto;
+    align-items: flex-start;
+  }
+
+  .galleryImageContainer{
+    min-width: 80px;
+  }
 }

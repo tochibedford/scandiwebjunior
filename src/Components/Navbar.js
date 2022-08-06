@@ -8,13 +8,13 @@ import CartIcon from './CartIcon';
 class Navbar extends Component{
     constructor(props){
         super(props);
-        
+        const {match} = this.props;
         // list of categories Elements
         this.handleNavClick = this.handleNavClick.bind(this)
         this.refreshBodyOnChangeCurrency = this.refreshBodyOnChangeCurrency.bind(this);
         this.state = {
             categoryElem: null,
-            currentCategory: this.props.match.params.category
+            currentCategory: match.params.category
         }
         
     }
@@ -38,8 +38,9 @@ class Navbar extends Component{
         at the end set the 'category' property in localStorage to the same. 
         ##**** will this cause the localStorage to not be set since it can happen after a page navigation?
         */
+        const {history, refreshBodyContainer} = this.props;
         if(window.location.pathname.startsWith("/categories")){
-            this.props.history.push({
+            history.push({
                 pathname: `/categories/${event.target.innerText.toLowerCase()}`
             })
             this.setState(()=>{
@@ -47,7 +48,7 @@ class Navbar extends Component{
                     currentCategory: event.target.innerText.toLowerCase()
                 })
             })
-            this.props.refreshBodyContainer[0](event.target.innerText.toLowerCase())
+            refreshBodyContainer[0](event.target.innerText.toLowerCase())
         }else{
             window.location.href = `/categories/${event.target.innerText.toLowerCase()}`
         }
@@ -55,16 +56,17 @@ class Navbar extends Component{
     }
 
     refreshBodyOnChangeCurrency(event){
+        const {history, refreshBodyContainer} = this.props;
         if(window.location.pathname.startsWith("/categories/")){
-            let newCategory = this.props.history.location.pathname.split("/categories/")
-            newCategory = newCategory[newCategory.length-1]
-            this.props.refreshBodyContainer[0](newCategory)
+            const newCategory = history.location.pathname.split("/categories/");
+            refreshBodyContainer[0](newCategory[newCategory.length-1])
         }
     }
 
     componentDidUpdate(){
+        const {categories} = this.props;
         this.categories = []
-        this.props.categories.forEach((category, index)=>{
+        categories.forEach((category, index)=>{
             this.categories.push(
                 <li key={index} className="category" onClick={this.handleNavClick}>
                     {category}
@@ -76,8 +78,9 @@ class Navbar extends Component{
     
 
     render(){
+        const {cart, changeCart, categories, currentCurrency, changeCurrentCurrency} = this.props;
         this.categories = []
-        this.props.categories.forEach((category, index)=>{
+        categories.forEach((category, index)=>{
             this.categories.push(
                 <li key={index} className="category" onClick={this.handleNavClick}>
                     {category}
@@ -94,8 +97,8 @@ class Navbar extends Component{
                     <img src={storeLogo} alt="store logo"/>
                 </div>
                 <div className="cartMoney">
-                    <Currency refreshBodyOnChangeCurrency={this.refreshBodyOnChangeCurrency} currentCurrency = {this.props.currentCurrency} changeCurrentCurrency={this.props.changeCurrentCurrency}/>
-                    <CartIcon currentCurrency={this.props.currentCurrency} cart={this.props.cart} changeCart={this.props.changeCart}/>
+                    <Currency refreshBodyOnChangeCurrency={this.refreshBodyOnChangeCurrency} currentCurrency = {currentCurrency} changeCurrentCurrency={changeCurrentCurrency}/>
+                    <CartIcon currentCurrency={currentCurrency} cart={cart} changeCart={changeCart}/>
                 </div>
             </nav>
         )

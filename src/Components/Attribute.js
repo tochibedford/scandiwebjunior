@@ -3,17 +3,19 @@ import { Component } from 'react'
 export default class Attribute extends Component{
     constructor(props){
         super(props);
+        const {productId, index} = this.props;
         this.handleChangeAttribute = this.handleChangeAttribute.bind(this)
         this.state = {
-            selected: window.localStorage.getItem(`${this.props.productId}-${this.props.index}`) ? window.localStorage.getItem(`${this.props.productId}-${this.props.index}`):`${0}`
+            selected: window.localStorage.getItem(`${productId}-${index}`) ? window.localStorage.getItem(`${productId}-${index}`):`${0}`
         }
     }
 
     handleChangeAttribute(event){
-        if(this.props.changeable){
-            let evv = event.currentTarget.id
+        const {productId, index, changeable} = this.props;
+        if(changeable){
+            const evv = event.currentTarget.id
             this.setState(()=>{
-                localStorage.setItem(`${this.props.productId}-${this.props.index}`, `${evv}`)
+                localStorage.setItem(`${productId}-${index}`, `${evv}`)
                 return({
                     selected: evv
                 })
@@ -31,20 +33,21 @@ export default class Attribute extends Component{
     }
 
     render(){
+        const {selectedAttribute, index, attribute} = this.props;
         this.attributeElements = []
-        if(this.props.attribute.type==="swatch"){
+        if(attribute.type==="swatch"){
             this.attributeElements.push(
-                <div key={this.props.index} id={this.props.index} className="attribute">
+                <div key={index} id={index} className="attribute">
                     <p className="attributeName">
-                        {this.props.attribute.name.toUpperCase()}:
+                        {attribute.name.toUpperCase()}:
                     </p>
                     <ul className="attributeList">
-                        {this.props.attribute.items.map((item, ind)=>{
-                            if(this.props.selectedAttribute){
-                                if(`${ind}` === this.props.selectedAttribute){
-                                    return(<li className="attributeSwatch attributeSwatchActive" id={ind} key={ind} onClick={this.handleChangeAttribute}> <div className={`attributeSwatchInner attributeItem`} style={{background:item.value, cursor: "default"}}></div> </li>)
+                        {attribute.items.map((item, ind)=>{
+                            if(selectedAttribute){
+                                if(`${ind}` === selectedAttribute){
+                                    return(<li className="attributeSwatch attributeSwatchActive" id={ind} key={ind} onClick={this.handleChangeAttribute}> <div className={`attributeSwatchInner attributeItem`} style={{background:item.value}}></div> </li>)
                                 }else{
-                                    return(<li className="attributeSwatch" id={ind} key={ind} onClick={this.handleChangeAttribute}> <div className={`attributeSwatchInner attributeItem`} style={{background:item.value, cursor: "default"}}></div> </li>)
+                                    return(<li className="attributeSwatch" id={ind} key={ind} onClick={this.handleChangeAttribute}> <div className={`attributeSwatchInner attributeItem`} style={{background:item.value}}></div> </li>)
                                 }
                             }else{   
                                 if(`${ind}` === this.state.selected){
@@ -59,17 +62,17 @@ export default class Attribute extends Component{
             )
         }else{
             this.attributeElements.push(
-                <div key={this.props.index} id={this.props.index} className='attribute'>
+                <div key={index} id={index} className='attribute'>
                     <p className="attributeName">
-                        {this.props.attribute.name.toUpperCase()}:
+                        {attribute.name.toUpperCase()}:
                     </p>
                     <ul className="attributeList">
-                        {this.props.attribute.items.map((item, ind)=>{
-                            if(this.props.selectedAttribute){
-                                if(`${ind}` === this.props.selectedAttribute){
-                                    return(<li className="attributeItem attributeText attributeTextActive" style={{cursor: "default"}} id={ind} key={ind} onClick={this.handleChangeAttribute}>{item.value}</li>)
+                        {attribute.items.map((item, ind)=>{
+                            if(selectedAttribute){
+                                if(`${ind}` === selectedAttribute){
+                                    return(<li className="attributeItem attributeText attributeTextActive" id={ind} key={ind} onClick={this.handleChangeAttribute}>{item.value}</li>)
                                 }else{
-                                    return(<li className="attributeItem attributeText" style={{cursor: "default"}} id={ind} key={ind} onClick={this.handleChangeAttribute}>{item.value}</li>)
+                                    return(<li className="attributeItem attributeText" id={ind} key={ind} onClick={this.handleChangeAttribute}>{item.value}</li>)
                                 }
                             }else{
                                 if(`${ind}` === this.state.selected){

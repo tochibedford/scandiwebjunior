@@ -14,8 +14,8 @@ export default class CartIcon extends Component{
     
     handleCartIconClick(){
         this.setState(prevState=>{
-            let miniCartShow = !prevState.miniCartShow
-            let body = document.querySelector('body');
+            const miniCartShow = !prevState.miniCartShow
+            const body = document.querySelector('body');
             if(miniCartShow){
                 body.style.overflow='hidden'
             }else{
@@ -29,8 +29,9 @@ export default class CartIcon extends Component{
     }
 
     render(){
+        const {currentCurrency, cart: cartProp, changeCart} = this.props;
         this.count = 0
-        let cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : {}
+        const cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : {}
         Object.keys(cart).forEach(productId=>{
             if(typeof cart[productId] === 'number'){
                 this.count += cart[productId]
@@ -43,10 +44,9 @@ export default class CartIcon extends Component{
         
         return(
             <div className="cartIconContainer" onClick={this.handleCartIconClick}>
-                {/* counter only shows count less than 10, anything above becomes 9+ */}
-                {this.state.cart && this.count<10 ? <div className="cartCounter">{this.count}</div>:<div className="cartCounter">9+</div>}
+                {this.state.cart && <div className="cartCounter">{this.count}</div>}
                 <img className="cart" src={cartIcon} alt="shopping cart icon"/>
-                <MiniCart showMiniCart={this.state.miniCartShow} amount={this.count} currentCurrency={this.props.currentCurrency} cart={this.props.cart} changeCart={this.props.changeCart}/>
+                <MiniCart showMiniCart={this.state.miniCartShow} amount={this.count} currentCurrency={currentCurrency} cart={cartProp} changeCart={changeCart}/>
             </div>
         )
     }

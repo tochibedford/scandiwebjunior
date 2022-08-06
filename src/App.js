@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import Navbar from './Components/Navbar'
 import Category from './Components/Category'
-import {graphFetch} from './Components/helpers'
+import {categoriesQuery, categoryQuery, graphFetch} from './Components/helpers'
 import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom'
 import ProductDescription from './Components/ProductDescription'
 import Cart from './Components/Cart'
@@ -45,17 +45,25 @@ export default class App extends Component{
     }
 
     componentDidMount(){
-        let query = `
-            query{
-
-                categories{
-                    name
-                }
+        const lastVisit = localStorage.getItem('lastVisit')
+        const newVisit = new Date().valueOf()
+        // it is been more than 5 hours since last visit clear out everything from the localStorage except cart and currency and set last visit to current time 
+        // in primitive millisecond value form i.e 1659760995797
+        if(lastVisit){
+            if (newVisit-lastVisit >= 12*(3600*1000)){
+                Object.keys(localStorage).forEach(item=>{
+                    if(item !== 'currency' || item !== 'cart'){
+                        localStorage.removeItem(item)
+                    }
+                })
             }
-        `
-        graphFetch(query).then(data=>{
-            let categories = []
-            data.categories.forEach((category)=>{categories.push(category.name.charAt(0).toUpperCase()+category.name.slice(1))})
+            localStorage.setItem('lastVisit', newVisit)
+        }else{
+            localStorage.setItem('lastVisit', newVisit)
+        }
+        graphFetch(categoriesQuery()).then(data=>{
+            const categories = [];
+            data.data.categories.forEach((category)=>{categories.push(category.name.charAt(0).toUpperCase()+category.name.slice(1))})
             this.setState(()=>{
                 return({
                     category: categories[0],
@@ -63,6 +71,15 @@ export default class App extends Component{
                 })
             })
         })
+
+        graphFetch(categoryQuery('all')).then(data=>{
+            this.setState(()=>{
+                return({
+                    allProducts: data
+                })
+            })
+        })
+
         
     }
 
@@ -76,15 +93,15 @@ export default class App extends Component{
                         </Route>
                         <Route path="/categories/:category">
                             <Navbar changeCart={this.changeCart} cart={this.state.cart} currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={this.state.category} categories={this.state.categories}/>
-                            {this.state.category && <Category changeCart={this.changeCart} cart={this.state.cart} currentCurrency = {this.state.currentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={ this.state.category }/>}
+                            {this.state.category && <Category allProducts={this.state.allProducts} changeCart={this.changeCart} cart={this.state.cart} currentCurrency = {this.state.currentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={ this.state.category }/>}
                         </Route>
                         <Route path="/product/:productid">
                             <Navbar changeCart={this.changeCart} cart={this.state.cart} currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={localStorage.getItem('category')?localStorage.getItem('category'):"all"} categories={this.state.categories}/>
-                            {this.state.currentCurrency && <ProductDescription changeCart={this.changeCart} cart={this.state.cart} currentCurrency={this.state.currentCurrency} />}
+                            {this.state.currentCurrency && <ProductDescription allProducts={this.state.allProducts} changeCart={this.changeCart} cart={this.state.cart} currentCurrency={this.state.currentCurrency} />}
                         </Route>
                         <Route path="/cart">
                             <Navbar changeCart={this.changeCart} cart={this.state.cart} currentCurrency = {this.state.currentCurrency} changeCurrentCurrency={this.changeCurrentCurrency} refreshBodyContainer={this.refreshBodyContainer} category={localStorage.getItem('category')?localStorage.getItem('category'):"all"} categories={this.state.categories}/>
-                            {this.state.currentCurrency && <Cart changeTotal={this.changeTotal} currentCurrency={this.state.currentCurrency} changeCart={this.changeCart} cart={this.state.cart} /> }
+                            {this.state.currentCurrency && <Cart allProducts={this.state.allProducts} changeTotal={this.changeTotal} currentCurrency={this.state.currentCurrency} changeCart={this.changeCart} cart={this.state.cart} /> }
                         </Route>
                     </Switch>
                 </div>

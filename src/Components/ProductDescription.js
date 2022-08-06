@@ -2,7 +2,7 @@ import { Component, createRef } from 'react'
 import { withRouter } from 'react-router-dom';
 import Attribute from './Attribute';
 import { Interweave } from 'interweave';
-import {graphFetch} from './helpers'
+import {graphFetch, productWithDescriptionQuery} from './helpers'
 
 
 class ProductDescription extends Component {
@@ -12,11 +12,8 @@ class ProductDescription extends Component {
         this.mainImagePDPRef = createRef()
         this.productDescriptionRef = createRef()
         this.handleAddToCart = this.handleAddToCart.bind(this)
-        this.handleGalleryScroll = this.handleGalleryScroll.bind(this)
         this.handleClickGalleryImage = this.handleClickGalleryImage.bind(this)
         this.state = {
-            galleryAtTop: true,
-            galleryAtBottom: false,
             gallery: null,
             brandName: null,
             productName: null,
@@ -28,42 +25,12 @@ class ProductDescription extends Component {
     }
 
     componentDidMount(){
-        let productId = window.location.pathname.split('/product/')
-        productId = productId[productId.length-1]
+        const locationList = window.location.pathname.split('/product/')
+        const productId = locationList[locationList.length-1]
 
-        let query = `
-            query{
-                product(id:"${productId}"){
-                    id
-                    name
-                    inStock
-                    gallery
-                    description
-                    category
-                    prices{
-                        currency{
-                            label
-                            symbol
-                        }
-                        amount
-                    }
-                    brand
-                    attributes{
-                        id
-                        name
-                        type
-                        items{
-                            id
-                            value
-                            displayValue
-                        }
-                    }
-                    
-                }
-            }
-        `
-        graphFetch(query).then(data=>{
-            data = data.product
+        
+        graphFetch(productWithDescriptionQuery(productId)).then(data=>{
+            data = data.data.product
             this.setState(()=>{
                 return{
                     id: data.id,
@@ -74,46 +41,9 @@ class ProductDescription extends Component {
                     prices: data.prices,
                     description: data.description,
                     inStock: data.inStock
-                    // put other data here
                 }
             })
         })
-    }
-
-    handleGalleryScroll(event){
-        if(event.target.parentElement.scrollTop){
-            this.setState(()=>{
-                
-                return({
-                    galleryAtTop: false
-                })
-            })
-        }else{
-            this.setState(()=>{
-                return({
-                    galleryAtTop: true
-                })
-            })
-            
-        }
-        if(event.target.parentElement.scrollTop >= event.target.parentElement.scrollHeight-500){
-            this.setState(()=>{
-                return({
-                    galleryAtBottom: true
-                })
-            })
-        }else{
-            this.setState(()=>{
-                return({
-                    galleryAtBottom: false
-                })
-            })
-        }
-        if(event.target.classList.contains('scrollUpGallery')){    
-            event.target.parentElement.scrollBy(0,-50)
-        }else{
-            event.target.parentElement.scrollBy(0,50)
-        }
     }
 
     handleClickGalleryImage(event){
@@ -121,13 +51,14 @@ class ProductDescription extends Component {
     }
 
     handleAddToCart(event){
+        const {cart, changeCart} = this.props;
         if(!this.state.inStock){
             return
         }
         
         /*
         get a list of all attributes for the current item
-        save to this.props.cart as:
+        save to cart variable as:
         cart = {
             productId: {
                 String(
@@ -163,50 +94,49 @@ class ProductDescription extends Component {
         */
        
         if(this.state.attributes.length<1){
-            this.props.cart[`${this.state.id}`]? this.props.cart[`${this.state.id}`]+= 1:this.props.cart[`${this.state.id}`]=1
-            this.props.changeCart(
-                this.props.cart
+            cart[`${this.state.id}`]? cart[`${this.state.id}`]+= 1:cart[`${this.state.id}`]=1
+            changeCart(
+                cart
             )
-            localStorage.setItem('cart',JSON.stringify(this.props.cart))
+            localStorage.setItem('cart',JSON.stringify(cart))
             
         }else{
-            let activeSwatchAttributes = this.productDescriptionRef.current.querySelectorAll('.attributeSwatchActive')
-            let activeTextAttributes = this.productDescriptionRef.current.querySelectorAll('.attributeTextActive')
-            let activeAttributes = [...activeSwatchAttributes, ...activeTextAttributes]
-            let selectedAttributesForCart = {}
+            const activeSwatchAttributes = this.productDescriptionRef.current.querySelectorAll('.attributeSwatchActive')
+            const activeTextAttributes = this.productDescriptionRef.current.querySelectorAll('.attributeTextActive')
+            const activeAttributes = [...activeSwatchAttributes, ...activeTextAttributes]
+            const selectedAttributesForCart = {}
             activeAttributes.forEach((attrib, index)=>{
-                let parentId = attrib.parentElement.parentElement.id
-                let id = attrib.id
+                const parentId = attrib.parentElement.parentElement.id
+                const id = attrib.id
                 selectedAttributesForCart[parentId]=id
             })
-            let selectedAttributesForCartString = JSON.stringify(selectedAttributesForCart)
-            if(this.props.cart[`${this.state.id}`]){
-                if(this.props.cart[`${this.state.id}`][selectedAttributesForCartString]){
-                    this.props.cart[`${this.state.id}`][selectedAttributesForCartString] += 1 
+            const selectedAttributesForCartString = JSON.stringify(selectedAttributesForCart)
+            if(cart[`${this.state.id}`]){
+                if(cart[`${this.state.id}`][selectedAttributesForCartString]){
+                    cart[`${this.state.id}`][selectedAttributesForCartString] += 1 
                 }else{
-                    this.props.cart[`${this.state.id}`][selectedAttributesForCartString] = 1
+                    cart[`${this.state.id}`][selectedAttributesForCartString] = 1
                 }
             }else{
-                this.props.cart[`${this.state.id}`]={}
-                this.props.cart[`${this.state.id}`][selectedAttributesForCartString]= 1
+                cart[`${this.state.id}`]={}
+                cart[`${this.state.id}`][selectedAttributesForCartString]= 1
             }
-            let oldCart = localStorage.getItem('cart') // string
-            oldCart = JSON.parse(oldCart) //Json
-            oldCart = {
+            const oldCart = JSON.parse(localStorage.getItem('cart')) 
+            const newCart = {
                 ...oldCart,
-                ...this.props.cart
+                ...cart
             }
-            this.props.changeCart(
-                oldCart
+            changeCart(
+                newCart
             )
-            oldCart = JSON.stringify(oldCart) //string
-            localStorage.setItem('cart', oldCart)
+            localStorage.setItem('cart', JSON.stringify(newCart))
         }
         
 
     }
 
     render(){
+        const {currentCurrency} = this.props;
         if(this.state.gallery){
             this.galleryImageElements = []
             this.state.gallery.forEach((galleryImageLink, index)=> {
@@ -218,8 +148,8 @@ class ProductDescription extends Component {
             });
         }
         if(this.state.attributes){
-            let productId = window.location.pathname.split('/product/')
-            productId = productId[productId.length-1]
+            const locationList = window.location.pathname.split('/product/')
+            const productId = locationList[locationList.length-1]
             this.attributeElements = []
             this.state.attributes.forEach((attribute, index)=>{
                 this.attributeElements.push(<Attribute key={index} changeable={true} productId={productId} attribute={attribute} index={index}/>)
@@ -227,18 +157,17 @@ class ProductDescription extends Component {
         }
         if(this.state.prices){
             this.priceResult = this.state.prices.filter(price=>{
-                return price.currency.symbol === this.props.currentCurrency;
+                return price.currency.symbol === currentCurrency;
             })
         }
         return (
             <div className="productDescriptionPortal">
                 <div className="galleryPDP">
-                    {this.galleryImageElements && this.galleryImageElements.length>3 && <div className={`scrollUpGallery ${this.state.galleryAtTop?"hideScrollButton":" "}`} onClick={this.handleGalleryScroll}>^</div>}
                     {this.galleryImageElements}
-                    {this.galleryImageElements && this.galleryImageElements.length>3 && <div className={`scrollDownGallery ${this.state.galleryAtBottom?"hideScrollButton":" "}`} onClick={this.handleGalleryScroll}>^</div>}
                 </div>
                 <div className="mainImagePDP">
                     {this.state.gallery && <img className="mainImage" src={this.state.gallery[0]} ref={this.mainImagePDPRef} alt="product description main"/>}
+                    {!this.state.inStock && <div className="outOfStock">OUT OF STOCK</div>}
                 </div>
                 <div className="productDescriptionPDP" ref={this.productDescriptionRef}>
                     <div className="productDescriptionPDPInner">
@@ -249,7 +178,7 @@ class ProductDescription extends Component {
                             {this.attributeElements}
                         </> }
                         <p className="attributeName">PRICE:</p>
-                        {this.state.prices && <p className="productPricePDP">{this.props.currentCurrency}{this.priceResult[0].amount}</p>}
+                        {this.state.prices && <p className="productPricePDP">{currentCurrency}{this.priceResult[0].amount.toFixed(2)}</p>}
                         {this.state.inStock? <div className="addToCartLargeButton" onClick={this.handleAddToCart}>ADD TO CART</div>:
                         <div className="addToCartLargeButton disabledAddToCart" onClick={this.handleAddToCart}>OUT OF STOCK</div>}
                         <div className="productInterDescription">

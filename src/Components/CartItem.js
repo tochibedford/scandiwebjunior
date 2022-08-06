@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import Attribute from './Attribute';
 import CartItemGallery from './CartItemGallery';
-import { graphFetch } from './helpers';
+import { graphFetch, productQuery } from './helpers';
 
 export default class CartItem extends Component{
     constructor(props){
@@ -19,106 +19,98 @@ export default class CartItem extends Component{
     }
 
     componentDidMount(){
-        let productId = this.props.productId
-        let query = `
-            query{
-                product(id:"${productId}"){
-                    id
-                    name
-                    inStock
-                    gallery
-                    category
-                    prices{
-                        currency{
-                            label
-                            symbol
-                        }
-                        amount
-                    }
-                    brand
-                    attributes{
-                        id
-                        name
-                        type
-                        items{
-                            id
-                            value
-                            displayValue
-                        }
-                    }
-                    
-                }
-            }
-        `
-        graphFetch(query).then(data=>{
-            data = data.product
-            this.priceResult = data.prices.filter(price=>{
-                return price.currency.symbol === this.props.currentCurrency;
-            })
-            
+        const {productId, currentCurrency} = this.props;
+        if(localStorage.getItem('all')){
+            const data = JSON.parse(localStorage.getItem('all'))
+            const currentProduct = data.data.category.products.filter(product=>{
+                return product.id === productId
+            })[0]
+            // console.log(currentProduct)
+
             this.setState(()=>{
-                return{
-                    id: data.id,
-                    gallery: data.gallery,
-                    brandName: data.brand,
-                    productName: data.name,
-                    attributes: data.attributes,
-                    prices: data.prices,
-                    // put other data here
-                }
+                    return{
+                        id: currentProduct.id,
+                        gallery: currentProduct.gallery,
+                        brandName: currentProduct.brand,
+                        productName: currentProduct.name,
+                        attributes: currentProduct.attributes,
+                        prices: currentProduct.prices,
+                        // put other data here
+                    }
+                })
+        }else{
+            graphFetch(productQuery(productId)).then(data=>{
+                data = data.data.product
+                this.priceResult = data.prices.filter(price=>{
+                    return price.currency.symbol === currentCurrency;
+                })
+                
+                this.setState(()=>{
+                    return{
+                        id: data.id,
+                        gallery: data.gallery,
+                        brandName: data.brand,
+                        productName: data.name,
+                        attributes: data.attributes,
+                        prices: data.prices,
+                        // put other data here
+                    }
+                })
             })
-        })
+
+        }
     }
 
     handleCartQuantityChange(event){
-        let cart = JSON.parse(localStorage.getItem('cart'))
-        if( typeof cart[this.props.productId] === 'number'){
-            this.productAttributeCombinationAmount = cart[this.props.productId]
+        const {productId, changeCart, attributeCombination} = this.props;
+        const cart = JSON.parse(localStorage.getItem('cart'))
+        if( typeof cart[productId] === 'number'){
+            this.productAttributeCombinationAmount = cart[productId]
             if(event.currentTarget.innerText === '+'){
-                cart[this.props.productId] = this.productAttributeCombinationAmount + 1
+                cart[productId] = this.productAttributeCombinationAmount + 1
                 localStorage.setItem('cart', JSON.stringify(cart))
-                this.props.changeCart(
+                changeCart(
                         cart
                 )
             }else{
                 if(this.productAttributeCombinationAmount === 1){
-                    delete cart[this.props.productId] //cart operation
+                    delete cart[productId] //cart operation
                     localStorage.setItem('cart', JSON.stringify(cart))
-                    this.props.changeCart(
+                    changeCart(
                             cart
                     )
 
                 }else{
-                    cart[this.props.productId] = this.productAttributeCombinationAmount - 1 //cart operation
+                    cart[productId] = this.productAttributeCombinationAmount - 1 //cart operation
                     localStorage.setItem('cart', JSON.stringify(cart))
-                    this.props.changeCart(
+                    changeCart(
                             cart
                     )
                 }
             }
             
         }else{
-            this.productAttributeCombinationAmount = cart[this.props.productId][JSON.stringify(this.props.attributeCombination)]
+            this.productAttributeCombinationAmount = cart[productId][JSON.stringify(attributeCombination)]
             if(event.currentTarget.innerText === '+'){
-                cart[this.props.productId][JSON.stringify(this.props.attributeCombination)] = this.productAttributeCombinationAmount + 1
+                cart[productId][JSON.stringify(attributeCombination)] = this.productAttributeCombinationAmount + 1
                 localStorage.setItem('cart', JSON.stringify(cart))
-                this.props.changeCart(
+                changeCart(
                         cart
                 )
             }else{
                 if(this.productAttributeCombinationAmount === 1){
-                    delete cart[this.props.productId][JSON.stringify(this.props.attributeCombination)]
-                    if(Object.keys(cart[this.props.productId]).length === 0){
-                        delete cart[this.props.productId]
+                    delete cart[productId][JSON.stringify(attributeCombination)]
+                    if(Object.keys(cart[productId]).length === 0){
+                        delete cart[productId]
                     }
                     localStorage.setItem('cart', JSON.stringify(cart))
-                    this.props.changeCart(
+                    changeCart(
                             cart
                     )
                 }else{
-                    cart[this.props.productId][JSON.stringify(this.props.attributeCombination)] = this.productAttributeCombinationAmount - 1
+                    cart[productId][JSON.stringify(attributeCombination)] = this.productAttributeCombinationAmount - 1
                     localStorage.setItem('cart', JSON.stringify(cart))
-                    this.props.changeCart(
+                    changeCart(
                             cart
                     )
                 }
@@ -128,32 +120,33 @@ export default class CartItem extends Component{
     }
 
     render(){
+        const {currentCurrency, attributeCombination, miniCart, amount} = this.props;
         this.attributeElements = []
         if(this.state.prices){
             this.priceResult = this.state.prices.filter(price=>{
-                return price.currency.symbol === this.props.currentCurrency;
+                return price.currency.symbol === currentCurrency;
             })
         }
         if(this.state.id){
-            if(this.props.attributeCombination){
-                Object.keys(this.props.attributeCombination).forEach((attributeId, index)=>{
+            if(attributeCombination){
+                Object.keys(attributeCombination).forEach((attributeId, index)=>{
 
                     this.attributeElements.push(
-                        <Attribute key={index} changeable={false} selectedAttribute={this.props.attributeCombination[attributeId]} productId={this.state.id} attribute={this.state.attributes[index]} index={index}/>
+                        <Attribute key={index} changeable={false} selectedAttribute={attributeCombination[attributeId]} productId={this.state.id} attribute={this.state.attributes[index]} index={index}/>
                     )
                 })
-                if(!this.props.miniCart){
+                if(!miniCart){
                     return(
-                        <div className='cartItem' price={this.priceResult[0].amount} amount={this.props.amount}>
+                        <div className='cartItem' price={this.priceResult[0].amount} amount={amount}>
                             <div className='cartItemInfo'>
                                 {this.state.brandName && <div className="cartItemBrandName">{this.state.brandName}</div>}  
                                 {this.state.productName && <div className="cartItemProductName">{this.state.productName}</div>}  
-                                {this.state.prices && <div className="cartItemPrice">{this.props.currentCurrency}{this.priceResult[0].amount}</div>}  
+                                {this.state.prices && <div className="cartItemPrice">{currentCurrency}{this.priceResult[0].amount.toFixed(2)}</div>}  
                                 {this.state.attributes && <div className="cartItemAttributes">{this.attributeElements}</div>}  
                             </div>
                             <div className="cartItemQuantity">
                                 <div className="cartItemQuantityIncrease" onClick={this.handleCartQuantityChange}>+</div>
-                                <div className="cartItemQuantityValue" >{this.props.amount}</div>
+                                <div className="cartItemQuantityValue" >{amount}</div>
                                 <div className="cartItemQuantityDecrease" onClick={this.handleCartQuantityChange}>-</div>
                             </div>
                             <div className="cartItemGalleryContainer">
@@ -163,16 +156,16 @@ export default class CartItem extends Component{
                     )
                 }else{
                     return(
-                        <div className='miniCartItem' price={this.priceResult[0].amount} amount={this.props.amount}>
+                        <div className='miniCartItem' price={this.priceResult[0].amount} amount={amount}>
                             <div className='miniCartItemInfo'>
                                 {this.state.brandName && <div className="miniCartItemBrandName">{this.state.brandName}</div>}  
                                 {this.state.productName && <div className="miniCartItemProductName">{this.state.productName}</div>}  
-                                {this.state.prices && <div className="miniCartItemPrice">{this.props.currentCurrency}{this.priceResult[0].amount}</div>}  
+                                {this.state.prices && <div className="miniCartItemPrice">{currentCurrency}{this.priceResult[0].amount.toFixed(2)}</div>}  
                                 {this.state.attributes && <div className="miniCartItemAttributes">{this.attributeElements}</div>}  
                             </div>
                             <div className="miniCartItemQuantity">
                                 <div className="miniCartItemQuantityIncrease" onClick={this.handleCartQuantityChange}>+</div>
-                                <div className="miniCartItemQuantityValue" >{this.props.amount}</div>
+                                <div className="miniCartItemQuantityValue" >{amount}</div>
                                 <div className="miniCartItemQuantityDecrease" onClick={this.handleCartQuantityChange}>-</div>
                             </div>
                             <div className="miniCartItemGalleryContainer">
@@ -183,17 +176,17 @@ export default class CartItem extends Component{
 
                 }
             }
-            if(!this.props.miniCart){
+            if(!miniCart){
                 return(
-                    <div className='cartItem' id={this.props.attributeCombination} price={this.priceResult[0].amount} amount={this.props.amount}>
+                    <div className='cartItem' id={attributeCombination} price={this.priceResult[0].amount} amount={amount}>
                         <div className="cartItemInfo">
                             {this.state.brandName && <div className="cartItemBrandName">{this.state.brandName}</div>}  
                             {this.state.productName && <div className="cartItemProductName">{this.state.productName}</div>}  
-                            {this.state.prices && <div className="cartItemPrice">{this.props.currentCurrency}{this.priceResult[0].amount}</div>}
+                            {this.state.prices && <div className="cartItemPrice">{currentCurrency}{this.priceResult[0].amount.toFixed(2)}</div>}
                         </div>
                         <div className="cartItemQuantity">
                             <div className="cartItemQuantityIncrease" onClick={this.handleCartQuantityChange}>+</div>
-                            <div className="cartItemQuantityValue" >{this.props.amount}</div>
+                            <div className="cartItemQuantityValue" >{amount}</div>
                             <div className="cartItemQuantityDecrease" onClick={this.handleCartQuantityChange}>-</div>
                         </div>
                         <div className="cartItemGalleryContainer">
@@ -203,15 +196,15 @@ export default class CartItem extends Component{
                 )
             }else{
                 return(
-                    <div className='miniCartItem' id={this.props.attributeCombination} price={this.priceResult[0].amount} amount={this.props.amount}>
+                    <div className='miniCartItem' id={attributeCombination} price={this.priceResult[0].amount} amount={amount}>
                         <div className="miniCartItemInfo">
                             {this.state.brandName && <div className="miniCartItemBrandName">{this.state.brandName}</div>}  
                             {this.state.productName && <div className="miniCartItemProductName">{this.state.productName}</div>}  
-                            {this.state.prices && <div className="miniCartItemPrice">{this.props.currentCurrency}{this.priceResult[0].amount}</div>}
+                            {this.state.prices && <div className="miniCartItemPrice">{currentCurrency}{this.priceResult[0].amount.toFixed(2)}</div>}
                         </div>
                         <div className="miniCartItemQuantity">
                             <div className="miniCartItemQuantityIncrease" onClick={this.handleCartQuantityChange}>+</div>
-                            <div className="miniCartItemQuantityValue" >{this.props.amount}</div>
+                            <div className="miniCartItemQuantityValue" >{amount}</div>
                             <div className="miniCartItemQuantityDecrease" onClick={this.handleCartQuantityChange}>-</div>
                         </div>
                         <div className="miniCartItemGalleryContainer">
