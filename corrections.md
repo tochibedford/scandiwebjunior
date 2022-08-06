@@ -5,13 +5,11 @@
 ### -<u>quick and easy</u>
 
 
-
-
 ### -<u>mid-level but quickly do-able</u>
-
+* make dark background of mini cart cover full height of a desktop page
 
 ### -<u>heavy lifting, might require major changes to the code</u>
-* Quickshop functionality is not working</br>
+
 
 ### -<u>unsure, and needs clarity from the team</u>
 
@@ -38,6 +36,7 @@
 ### -<u>heavy lifting, might require major changes to the code</u>
 * Requests are duplicated</br>
 * Requesting product data for cart items is not best idea, better to save cart items in local or global storage</br>
+* Quickshop functionality is not working</br>
 
 
 ### -<u>unsure, and needs clarity from the team</u>
