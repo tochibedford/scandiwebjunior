@@ -45,6 +45,22 @@ export default class App extends Component{
     }
 
     componentDidMount(){
+        const lastVisit = localStorage.getItem('lastVisit')
+        const newVisit = new Date().valueOf()
+        // it is been more than 5 hours since last visit clear out everything from the localStorage except cart and currency and set last visit to current time 
+        // in primitive millisecond value form i.e 1659760995797
+        if(lastVisit){
+            if (newVisit-lastVisit >= 12*(3600*1000)){
+                Object.keys(localStorage).forEach(item=>{
+                    if(item !== 'currency' || item !== 'cart'){
+                        localStorage.removeItem(item)
+                    }
+                })
+            }
+            localStorage.setItem('lastVisit', newVisit)
+        }else{
+            localStorage.setItem('lastVisit', newVisit)
+        }
         graphFetch(categoriesQuery()).then(data=>{
             const categories = [];
             data.data.categories.forEach((category)=>{categories.push(category.name.charAt(0).toUpperCase()+category.name.slice(1))})
